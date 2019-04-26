@@ -50,4 +50,36 @@ namespace Werk {
 				_average, stddev());
 		}
 	};
+
+	template<typename T>
+	class RangedSummaryStatistics : public SummaryStatistics<T> {
+
+	private:
+		T _min = 0;
+		T _max = 0;
+
+	public:
+		T min() const { return _min;}
+		T max() const { return _max; }
+		T range() const { return _max - _min; }
+
+		vois sample(T t) {
+			SummaryStatistics<T>::sample(t);
+			if(this->count() == 1) {
+				_min = _max = t;
+			}
+			else if(t > _max) {
+				_max = t;
+			}
+			else if(t < _min) {
+				_min = t;
+			}
+		}
+
+		void writeJson(FILE* file) {
+			fprintf(file, "{\"count\": %" PRIu64 ", \"average\": %.12f, \"stddev\": %.12f, \"min\": %.12f, \"max\": %.12f}",
+			this->count(), this->average(), this->stddev(), static_cast<double>(_min), static_cast<double>(_max));
+		}
+	}
+
 } //end namespace Werk
