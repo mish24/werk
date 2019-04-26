@@ -18,3 +18,9 @@ def build(bld):
 		target = '../test/WerkTest',
 		use = ['Werk'],
 		)
+
+	bld.program(
+		source = bld.path.ant_glob('WerkProfile/**/*.cpp', excp=[]),
+		target = '../bin/WerkProfile',
+		use = ['Werk'],
+		)

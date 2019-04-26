@@ -85,3 +85,8 @@ def hello(ctx):
 	Logs.info('%s Running hello %s' % (stars, stars))
 	os.system("build/bin/HelloWorld")
 
+def profile(ctx):
+	stars = '*'*30;
+	Logs.info('%s Running Profiles %s' % (stars, stars))
+	os.system("build/bin/WerkProfile")
+
