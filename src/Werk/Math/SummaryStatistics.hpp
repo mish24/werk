@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cstdint>
+#include <cinttypes>
+#include <cstdio>
 #include <limits>
 #include <cmath>
 
@@ -8,6 +10,7 @@ namespace Werk {
 
 	template<typename T>
 	class SummaryStatistics {
+
 		uint64_t _count = 0;
 		T _sum = 0;
 		double _average = 0;
@@ -40,6 +43,11 @@ namespace Werk {
 			_sum = 0;
 			_average = 0;
 			_m2 = 0;
+		}
+
+		void writeJson(FILE* file) {
+			fprintf(file, "{\"count\": %" PRIu64 ", \"average\":%.12f, \"stddev\":%.12f}", _count, 
+				_average, stddev());
 		}
 	};
 } //end namespace Werk
