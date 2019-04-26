@@ -6,7 +6,7 @@
 
 namespace Werk {
 
-	uint64_t epochNs() {
+	uint64_t epochTime() {
 
 		#ifndef __MACH__
 			timespec t;
@@ -28,7 +28,7 @@ namespace Werk {
 	public:
 		uint64_t time() const { return _time; }
 		void setTime(uint64_t time) { _time = time; }
-		void setRealTime() { _time = epochNs(); }
+		void setEpochTime() { _time = epochTime(); }
 
 	protected:
 		uint64_t _time = 0;

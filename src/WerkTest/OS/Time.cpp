@@ -3,14 +3,14 @@
 
 BOOST_AUTO_TEST_SUITE(ClockTest)
 
-BOOST_AUTO_TEST_CASE(TestEpochNs) {
-	uint64_t t1 = Werk::epochNs();
+BOOST_AUTO_TEST_CASE(TestEpochTime) {
+	uint64_t t1 = Werk::epochTime();
 	BOOST_REQUIRE(t1 >= 0);
 
-	uint64_t t2 = Werk::epochNs();
+	uint64_t t2 = Werk::epochTime();
 	BOOST_REQUIRE(t2 >= t1);
 
-	uint64_t t3 = Werk::epochNs();
+	uint64_t t3 = Werk::epochTime();
 	BOOST_REQUIRE(t3 >= t2);
 }
 
@@ -21,9 +21,9 @@ BOOST_AUTO_TEST_CASE(TestClock) {
 	c.setTime(100);
 	BOOST_REQUIRE_EQUAL(c.time(), 100);
 
-	c.setRealTime();
+	c.setEpochTime();
 	uint64_t t1 = c.time();
-	c.setRealTime();
+	c.setEpochTime();
 	uint64_t t2 = c.time();
 	BOOST_REQUIRE(t2 >= t1);
 }

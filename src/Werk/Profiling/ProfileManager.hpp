@@ -33,8 +33,8 @@ namespace Werk {
 			//check the time it takes to call the timing function
 			add(&_baseProfile);
 			for(uint64_t i=0; i < 100 * 1000; ++i) {
-				_baseProfile.start(Werk::epochNs());
-				_baseProfile.stop(Werk::epochNs());
+				_baseProfile.start(Werk::epochTime());
+				_baseProfile.stop(Werk::epochTime());
 			}
 		}
 	};
