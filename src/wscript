@@ -1,0 +1,20 @@
+def build(bld):
+	#main static library is created
+	bld.stlib(
+		source = bld.path.ant_glob('Werk/**/*.cpp',excl=[]),
+		target = '../lib/Werk', 
+		name = 'Werk', #this name is appened to lib -> libwerk2.a
+		)
+
+	#hello world
+	bld.program(
+		source = 'HelloWorld/main.cpp',
+		target = '../bin/HelloWorld',
+		use = ['Werk'],
+		)
+
+	bld.program(
+		source = bld.path.ant_glob('WerkTest/**/*.cpp', excl=[]),
+		target = '../test/WerkTest',
+		use = ['Werk'],
+		)
