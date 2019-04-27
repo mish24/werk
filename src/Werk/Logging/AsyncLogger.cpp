@@ -25,7 +25,7 @@ void AsyncLogger::log(LogLevel level, const char* format, ...) {
 	//vsnprintf -> s(buffer to be writtem, size, format message, args)
 	int n = std::vsnprintf(lmessage.message, LogMessage::maxLineLength, format, args);
 	if(n < 0) {
-		message.length = LogMessage::maxLineLength;
+		lmessage.length = LogMessage::maxLineLength;
 		//n -> no. of characters actually written, w/o null termination
 	}
 	else if (n >= static_cast<int>(LogMessage::maxLineLength)) {
@@ -44,6 +44,7 @@ void AsyncLogger::logRaw(LogLevel level, const char* rawMessage) {
 	LogMessage lmessage;
 	lmessage.time = clock()->time();
 	lmessage.level = level;
+	lmessage.sequenceNumber = _nextReceiveSequenceNumber++;
 	//log the message
 	lmessage.length = LogMessage::maxLineLength; //this could be calculated on the fly
 	std::strncpy(lmessage.message, rawMessage, lmessage.length);
@@ -58,21 +59,21 @@ void AsyncLogger::writeLogs() {
 	while(_messages.pop(lmessage)) {
 		if(lmessage.sequenceNumber != _nextSendSequenceNumber) {
 			std::fprintf(_file, "{\"t\":%" PRIu64 ",\"n\":%" PRIu64 ",\"level\":\"%s\",\"message\":\"Incorrect log sequence number; expecting %" PRIu64 " but received %" PRIu64 "\"}\n",
-				message.time,
+				lmessage.time,
 				_nextReceiveSequenceNumber,
 				logLevels[static_cast<size_t>(LogLevel::CRITICAL)],
 				_nextReceiveSequenceNumber,
-				message.sequenceNumber);
+				lmessage.sequenceNumber);
 		}
 		_nextReceiveSequenceNumber = lmessage.sequenceNumber + 1;
 
 		if(lmessage.level == LogLevel::JSON) {
 			std::fprintf(_file, "{\t\":%" PRIu64 ",\"\":%" PRIu64 ",\"data\":%s}\n",
-				message.time, message.sequenceNumber, message.message);
+				lmessage.time, lmessage.sequenceNumber, lmessage.message);
 		}
 		else {
 			std::fprintf(_file, "{\"t\":%" PRIu64 ",\"n\":%" PRIu64 ",\"level\":\"%s\",\"message\":\"%s\"}\n",
-				message.time, message.sequenceNumber, logLevels[static_cast<size_t>(message.level)], message.message);
+				lmessage.time, lmessage.sequenceNumber, logLevels[static_cast<size_t>(lmessage.level)], lmessage.message);
 		}
 		wrote = true;
 	}
@@ -82,7 +83,7 @@ void AsyncLogger::writeLogs() {
 	}
 }
 
-void AsyncLogger::loggingThread() {
+void AsyncLogWriter::loggingThread() {
 	while(true) {
 		//write all the logs
 		for(size_t i=0; i < _loggers.size(); ++i) {

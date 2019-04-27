@@ -25,14 +25,14 @@ namespace Werk {
 	private:
 		static const size_t totalMessageSize = 1024;
 		static const size_t headerSize = 32;
-		static const size_t maxLineLength = totalMessageSize - headerSize;
-
 	public:
 		//header
 		uint64_t sequenceNumber;
 		uint64_t time;
 		LogLevel level;
 		size_t length;
+		static const size_t maxLineLength = totalMessageSize - headerSize;
+
 
 		//message
 		char message[maxLineLength];

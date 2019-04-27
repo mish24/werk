@@ -4,13 +4,17 @@
 
 #include "Werk/Math/SummaryStatistics.hpp"
 #include "Werk/OS/Time.hpp"
-#include "Werk/Logging/Logger.hpp"
+#include "Werk/Logging/AsyncLogger.hpp"
 
 int main()
 {
 	Werk::Clock clock;
 	clock.setEpochTime();
-	Werk::Logger* log = new Werk::SyncLogger(&clock);
+
+	Werk::AsyncLogger* log = new Werk::AsyncLogger(&clock);
+	Werk::AsyncLogWriter *logWriter = new Werk::AsyncLogWriter();
+	logWriter->addLogger(log);
+
 	log->logRaw(Werk::LogLevel::INFO, "Starting....");
 
 	Werk::SummaryStatistics<double> s;
@@ -25,5 +29,6 @@ int main()
     std::cout << "Summary stats written successfully" << std::endl;
 
     log->log(Werk::LogLevel::SUCCESS, "Hello there! count=%" PRIu64 " average=%f stddev=%f", s.count(), s.average(), s.stddev());
+    logWriter->stop();
     return 0;
 }
