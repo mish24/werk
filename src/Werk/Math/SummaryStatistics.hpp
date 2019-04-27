@@ -63,7 +63,7 @@ namespace Werk {
 		T max() const { return _max; }
 		T range() const { return _max - _min; }
 
-		vois sample(T t) {
+		void sample(T t) {
 			SummaryStatistics<T>::sample(t);
 			if(this->count() == 1) {
 				_min = _max = t;
@@ -80,6 +80,6 @@ namespace Werk {
 			fprintf(file, "{\"count\": %" PRIu64 ", \"average\": %.12f, \"stddev\": %.12f, \"min\": %.12f, \"max\": %.12f}",
 			this->count(), this->average(), this->stddev(), static_cast<double>(_min), static_cast<double>(_max));
 		}
-	}
+	};
 
 } //end namespace Werk
