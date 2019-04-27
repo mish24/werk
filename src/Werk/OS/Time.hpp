@@ -31,6 +31,7 @@ namespace Werk {
 		uint64_t time() const { return _time; }
 		void setTime(uint64_t time) { _time = time; }
 		void setEpochTime() { _time = epochTime(); }
+		uint64_t etime() const { return epochTime(); }
 
 	protected:
 		uint64_t _time = 0;
