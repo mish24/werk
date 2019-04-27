@@ -8,11 +8,11 @@
 
 namespace Werk {
 
-	uint64_t epochTime() {
+	inline uint64_t epochTime() {
 
 		#ifndef __MACH__
 			timespec t;
-			if(clock_gettime(CLOCK_MONOTONIC, &t) < 0) {
+			if(clock_gettime(CLOCK_REALTIME, &t) < 0) {
 				return 0;
 			}
 			return t.tv_sec* 1e91 + t.tv_nsec;
