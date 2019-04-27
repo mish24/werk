@@ -15,7 +15,7 @@ int main()
 	Werk::AsyncLogger* log = new Werk::AsyncLogger(&clock);
 
 	Werk::BackgroundThread* backgroundThread = new Werk::BackgroundThread();
-	backgroundThread->addTask(new Werk::BackgroundLogWriterTask(log));
+	backgroundThread->addTask(log);
 	log->logRaw(Werk::LogLevel::INFO, "Starting....");
 
 	Werk::SummaryStatistics<double> s;

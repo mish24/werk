@@ -9,7 +9,7 @@
 
 namespace Werk {
 
-	class AsyncLogger : public Logger {
+	class AsyncLogger : public Logger, public BackgroundTask {
 
 	private:
 		FILE* _file;
@@ -24,18 +24,9 @@ namespace Werk {
 
 		virtual void log(LogLevel level, const char* format, ...) override;
 		virtual void logRaw(LogLevel level, const char* rawMessage) override;
-		void writeLogs();
+
+		virtual void execute() override;
+		
 	};
 
-	class BackgroundLogWriterTask : public BackgroundTask {
-
-	private:
-		AsyncLogger* _logger;
-
-	public:
-		BackgroundLogWriterTask(AsyncLogger* logger) : _logger(logger) {}
-
-		virtual void execute() { _logger->writeLogs(); }
-		
-	}; //end AsyncLogWriter
 }

@@ -20,8 +20,11 @@ namespace Werk {
 
 		~BackgroundThread() { stop(); }
 
+		uint64_t frequencyNs() const { return _frequencyNs; }
 		void setFrequencyNs(long frequencyNs) { _frequencyNs = frequencyNs; }
 		//to be called from main mostly
+		std::vector<BackgroundTask*>& tasks() { return _tasks; }
+		const std::vector<BackgroundTask*>& tasks() const { return _tasks; }
 		void addTask(BackgroundTask* task) { _tasks.push_back(task);}
 
 		void stop() {
