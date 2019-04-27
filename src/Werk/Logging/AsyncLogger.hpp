@@ -2,11 +2,10 @@
 
 #include <boost/lockfree/spsc_queue.hpp>
 #include <cstdio>
-#include <thread>
-#include <time.h>
-#include <vector>
+#include <cstdint>
 
 #include "Logger.hpp"
+#include "Werk/Threading/BackgroundTask.hpp"
 
 namespace Werk {
 
@@ -28,33 +27,15 @@ namespace Werk {
 		void writeLogs();
 	};
 
-	class AsyncLogWriter {
+	class BackgroundLogWriterTask : public BackgroundTask {
 
 	private:
-		timespec _delay;
-		std::vector<AsyncLogger*> _loggers;
-		//global variables in multithreaded app must be volatile
-		volatile uint64_t _frequencyNs;
-		volatile bool _running = true;
-		std::thread _thread;
-
-		void loggingThread();
+		AsyncLogger* _logger;
 
 	public:
-		AsyncLogWriter(long frequencyNs=100ul*1000*1000) : _frequencyNs(frequencyNs) {
-			_thread = std::thread(&AsyncLogWriter::loggingThread, this);
-			//https://thispointer.com/c11-start-thread-by-member-function-with-arguments/
-		}
-		~AsyncLogWriter() { stop(); }
+		BackgroundLogWriterTask(AsyncLogger* logger) : _logger(logger) {}
 
-		void setFrequencyNs(long frequencyNs) { _frequencyNs = frequencyNs; }
-		void addLogger(AsyncLogger* logger) { _loggers.push_back(logger); }
-
-		void stop() {
-			if(_running) {
-				_running = false;
-				_thread.join();
-			}
-		}
+		virtual void execute() { _logger->writeLogs(); }
+		
 	}; //end AsyncLogWriter
 }

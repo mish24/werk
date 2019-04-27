@@ -34,7 +34,7 @@ namespace Werk {
 		virtual void log(LogLevel level, const char* format, ...) override {
 			va_list args;
 			va_start(args, format);
-			std::fprintf(_file, "%" PRIu64 " [%10s] ", clock()->time(),
+			std::fprintf(_file, "%" PRId64 " [%7s] ", clock()->time(),
 				logLevels[static_cast<size_t>(level)]);
 			std::vfprintf(_file, format, args);
 			std::fprintf(_file, "\n");
@@ -42,7 +42,7 @@ namespace Werk {
 		}
 
 		virtual void logRaw(LogLevel level, const char* rawMessage) override {
-			std::fprintf(_file, "%" PRIu64 " [%10s] %s\n", clock()->time(), logLevels[static_cast<size_t>(level)], rawMessage);
+			std::fprintf(_file, "%" PRId64 " [%7s] %s\n", clock()->time(), logLevels[static_cast<size_t>(level)], rawMessage);
 		}
 	};
 }

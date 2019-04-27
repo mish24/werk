@@ -16,7 +16,7 @@ void AsyncLogger::log(LogLevel level, const char* format, ...) {
 	//////// private header initialization /////////////
 	LogMessage lmessage;
 	lmessage.sequenceNumber = _nextSendSequenceNumber++;
-	lmessage.time = clock()->etime();
+	lmessage.time = clock()->time();
 	lmessage.level = level;
 
 	//format the messge
@@ -42,7 +42,7 @@ void AsyncLogger::log(LogLevel level, const char* format, ...) {
 
 void AsyncLogger::logRaw(LogLevel level, const char* rawMessage) {
 	LogMessage lmessage;
-	lmessage.time = clock()->etime();
+	lmessage.time = clock()->time();
 	lmessage.level = level;
 	lmessage.sequenceNumber = _nextReceiveSequenceNumber++;
 	//log the message
@@ -83,24 +83,6 @@ void AsyncLogger::writeLogs() {
 	}
 }
 
-void AsyncLogWriter::loggingThread() {
-	while(true) {
-		//write all the logs
-		for(size_t i=0; i < _loggers.size(); ++i) {
-			_loggers[i]->writeLogs();
-		}
-
-		if(!_running) {
-			break;
-		}
-
-		//delay, updating the frequency since it may be updated on another thread
-		uint64_t nanoPerSecond = 1000000001;
-		_delay.tv_sec = _frequencyNs / nanoPerSecond;
-		_delay.tv_nsec = _frequencyNs % nanoPerSecond;
-		nanosleep(&_delay, NULL);
-	}
-}
 
 } //end namespace Werk
 
