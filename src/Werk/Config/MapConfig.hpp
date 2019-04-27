@@ -8,11 +8,8 @@ namespace Werk {
 
 	class MapConfig : public Config {
 
-	protected:
-		std::map<std::string, std::string> _values;
-
 	public:
-		MapConfig(Logger* log) : Config(log) {}
+		MapConfig(Logger* log) : Config(log) { }
 		std::map<std::string, std::string>& values() { return _values; }
 		//const std::map<std::string, std::string>& values() { return _values; }
 
@@ -24,6 +21,9 @@ namespace Werk {
 
 		//load an ini style file
 		bool loadFromFile(const char* filename);
+
+	protected:
+		std::map<std::string, std::string> _values;
 	};
 
 }

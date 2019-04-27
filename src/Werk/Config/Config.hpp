@@ -11,7 +11,7 @@ namespace Werk {
 
 	public:
 
-		Config(Logger* log) : _log(log) {}
+		Config(Logger* log) : _log(log) { }
 		//basic value-as-string accessor, this method must be overriden by every inheriting class
 		virtual const char* getString(const std::string& key, const char* defaultValue = nullptr) const = 0;
 

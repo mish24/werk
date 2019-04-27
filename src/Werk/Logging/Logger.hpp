@@ -24,7 +24,8 @@ namespace Werk {
 	class NullLogger : public Logger {
 		//null logger instance for testing
 	public:
-		NullLogger() : Logger(nullptr) {}
+		NullLogger() : Logger(nullptr) { }
+		virtual ~NullLogger() {}
 
 		virtual void log(LogLevel, const char*, ...) override {}
 		virtual void logRaw(LogLevel, const char*) override {}
