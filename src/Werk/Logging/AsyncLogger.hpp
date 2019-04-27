@@ -19,13 +19,13 @@ namespace Werk {
 
 	public:
 
-		AsyncLogger(Werk::Clock* clock, FILE* file=stdout) :
-		Logger(clock), _file(file) {}
+		AsyncLogger(Werk::Clock* clock, FILE* file=stdout, const std::string& taskname="Logger") :
+		Logger(clock), BackgroundTask(taskname),_file(file) {}
 
 		virtual void log(LogLevel level, const char* format, ...) override;
 		virtual void logRaw(LogLevel level, const char* rawMessage) override;
 
-		virtual void execute() override;
+		virtual void executeTask() override;
 		
 	};
 

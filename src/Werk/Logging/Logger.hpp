@@ -19,6 +19,16 @@ namespace Werk {
 
 		virtual void logRaw(LogLevel level, const char* message)=0;
 		virtual void log(LogLevel level, const char* format, ...)=0;
+	};//end Logger
+
+	class NullLogger : public Logger {
+		//null logger instance for testing
+	public:
+		NullLogger() : Logger(nullptr) {}
+
+		virtual void log(LogLevel, const char*, ...) override {}
+		virtual void logRaw(LogLevel, const char*) override {}
+
 	};
 
 	class SyncLogger : public Logger {
@@ -45,4 +55,4 @@ namespace Werk {
 			std::fprintf(_file, "%" PRId64 " [%7s] %s\n", clock()->time(), logLevels[static_cast<size_t>(level)], rawMessage);
 		}
 	};
-}
+} //end of Werk

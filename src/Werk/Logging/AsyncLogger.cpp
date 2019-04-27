@@ -52,7 +52,7 @@ void AsyncLogger::logRaw(LogLevel level, const char* rawMessage) {
 	_messages.push(lmessage);
 }
 
-void AsyncLogger::execute() {
+void AsyncLogger::executeTask() {
 
 	bool wrote = false;
 	LogMessage lmessage;
