@@ -13,10 +13,10 @@ namespace Werk {
 		std::map<std::string, std::string>& values() { return _values; }
 		//const std::map<std::string, std::string>& values() { return _values; }
 
-		virtual const char* getString(const std::string& key, const char* defaultValue=nullptr) const {
+		virtual const char* getStringRaw(const std::string& key) const {
 
 			auto i = _values.find(key);
-			return i == _values.end() ? defaultValue : i->second.c_str();
+			return i == _values.end() ? nullptr : i->second.c_str();
 		}
 
 		//load an ini style file
