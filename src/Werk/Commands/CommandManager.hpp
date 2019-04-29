@@ -30,5 +30,7 @@ namespace Werk {
 
 		bool execute(const std::string& commandLine);
 		bool execute(const std::vector<std::string>& arguments);
+
+		CommandAction* newCommandAction(const std::string& commandLine);
 	};
 }

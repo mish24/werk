@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_CASE(TestDefaultLog) {
 	Werk::SyncLog* log = new Werk::SyncLog("tree", &c);
 	Werk::LogManager logManager;
 
-	BOOST_REQUIRE_EQUAL(logManager.getLog("tree"), log);
+	BOOST_REQUIRE_EQUAL(logManager.getLog("tree"), nullptr);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
