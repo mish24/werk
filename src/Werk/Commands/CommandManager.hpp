@@ -5,18 +5,18 @@
 
 #include "Werk/Commands/Command.hpp"
 #include "Werk/Commands/EchoCommand.hpp"
-#include "Werk/Logging/Logger.hpp"
+#include "Werk/Logging/Log.hpp"
 
 namespace Werk {
 
 	class CommandManager {
 
 	private:
-		Logger* _log;
+		Log* _log;
 		std::map<std::string, Command*> _commands;
 
 	public:
-		CommandManager(Logger* log, bool defaultCommands=true) : _log(log) {
+		CommandManager(Log* log, bool defaultCommands=true) : _log(log) {
 			if(defaultCommands) {
 			_commands["echo"] = new EchoCommand(log);
 				_commands["null"] = new NullCommand();

@@ -1,13 +1,13 @@
 #include <boost/test/unit_test.hpp>
 #include "Werk/Config/MapConfig.hpp"
-#include "Werk/Logging/Logger.hpp"
+#include "Werk/Logging/Log.hpp"
 
 
 BOOST_AUTO_TEST_SUITE(MapConfigTest)
 
 BOOST_AUTO_TEST_CASE(TestBasicTypes) {
 	Werk::Clock clock;
-	Werk::SyncLogger log(&clock);
+	Werk::SyncLog log(&clock);
 	Werk::MapConfig c(&log);
 	c.values()["Pi"] = "3.14";
 	c.values()["Two"] = "2";
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(TestBasicTypes) {
 
 BOOST_AUTO_TEST_CASE(TestLoadFile) {
 
-	Werk::NullLogger log;
+	Werk::NullLog log;
 	Werk::MapConfig c(&log);
 	c.loadFromFile("src/WerkTest/Config/TestConfig.ini");
 

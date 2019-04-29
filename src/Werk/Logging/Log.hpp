@@ -19,7 +19,7 @@ namespace Werk {
 
 		virtual void logRaw(LogLevel level, const char* message)=0;
 		virtual void log(LogLevel level, const char* format, ...)=0;
-	};//end Log
+	};//end Loggerg
 
 	class NullLog : public Log {
 		//null logger instance for testing

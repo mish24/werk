@@ -4,12 +4,12 @@
 #include <cstdio>
 #include <cstdint>
 
-#include "Logger.hpp"
+#include "Log.hpp"
 #include "Werk/Threading/BackgroundTask.hpp"
 
 namespace Werk {
 
-	class AsyncLogger : public Logger, public BackgroundTask {
+	class AsyncLog : public Log, public BackgroundTask {
 
 	private:
 		FILE* _file;
@@ -19,8 +19,8 @@ namespace Werk {
 
 	public:
 
-		AsyncLogger(Werk::Clock* clock, FILE* file=stdout, const std::string& taskname="Logger") :
-		Logger(clock), BackgroundTask(taskname),_file(file) {}
+		AsyncLog(Werk::Clock* clock, FILE* file=stdout, const std::string& taskname="Log") :
+		Log(clock), BackgroundTask(taskname),_file(file) {}
 
 		virtual void log(LogLevel level, const char* format, ...) override;
 		virtual void logRaw(LogLevel level, const char* rawMessage) override;

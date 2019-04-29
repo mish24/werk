@@ -4,7 +4,7 @@
 
 #include "Werk/Math/SummaryStatistics.hpp"
 #include "Werk/OS/Time.hpp"
-#include "Werk/Logging/AsyncLogger.hpp"
+#include "Werk/Logging/AsyncLog.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
 
 int main()
@@ -12,7 +12,7 @@ int main()
 	Werk::Clock clock;
 	clock.setEpochTime();
 
-	Werk::AsyncLogger* log = new Werk::AsyncLogger(&clock);
+	Werk::AsyncLog* log = new Werk::AsyncLog(&clock);
 
 	Werk::BackgroundThread* backgroundThread = new Werk::BackgroundThread();
 	backgroundThread->addTask(log);

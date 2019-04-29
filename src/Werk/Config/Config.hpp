@@ -4,7 +4,7 @@
 #include <cstdarg>
 #include <limits>
 #include <string>
-#include "Werk/Logging/Logger.hpp"
+#include "Werk/Logging/Log.hpp"
 
 namespace Werk {
 
@@ -12,7 +12,7 @@ namespace Werk {
 
 	public:
 
-		Config(Logger* log) : _log(log) { }
+		Config(Log* log) : _log(log) { }
 		//basic value-as-string accessor, this method must be overriden by every inheriting class, return NULL in case key is absemt
 		virtual const char* getStringRaw(const std::string& key) const = 0;
 
@@ -94,6 +94,6 @@ namespace Werk {
 
 
 	protected:
-		Logger* _log;
+		Log* _log;
 	};
 }

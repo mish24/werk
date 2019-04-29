@@ -5,18 +5,18 @@ echo command
 #include <boost/algorithm/string/join.hpp>
 
 #include "Command.hpp"
-#include "Werk/Logging/Logger.hpp"
+#include "Werk/Logging/Log.hpp"
 
 namespace Werk {
 
 	class EchoCommand : public Command {
 
 	private:
-		Logger* _log;
+		Log* _log;
 		LogLevel _level;
 
 	public:
-		EchoCommand(Logger* log, LogLevel level=LogLevel::INFO) :
+		EchoCommand(Log* log, LogLevel level=LogLevel::INFO) :
 			Command("Echoes the arguments back to the log"), _log(log), _level(level) {}
 
 			virtual bool execute(const std::vector<std::string>& arguments) {
