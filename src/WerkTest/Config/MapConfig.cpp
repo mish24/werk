@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_SUITE(MapConfigTest)
 
 BOOST_AUTO_TEST_CASE(TestBasicTypes) {
 	Werk::Clock clock;
-	Werk::SyncLog log(&clock);
+	Werk::SyncLog log("stdout", &clock);
 	Werk::MapConfig c(&log);
 	c.values()["Pi"] = "3.14";
 	c.values()["Two"] = "2";
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(TestBasicTypes) {
 
 BOOST_AUTO_TEST_CASE(TestLoadFile) {
 
-	Werk::NullLog log;
+	Werk::NullLog log("null");
 	Werk::MapConfig c(&log);
 	c.loadFromFile("src/WerkTest/Config/TestConfig.ini");
 
