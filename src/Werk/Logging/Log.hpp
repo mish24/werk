@@ -11,11 +11,11 @@ namespace Werk {
 
 	class Log {
 
-		Werk::Clock* _clock;
+		const Werk::Clock* _clock;
 		std::string _name;
 
 	public:
-		Log(const std::string& name, Werk::Clock* clock) : _name(name) , _clock(clock) {}
+		Log(const std::string& name, const Werk::Clock* clock) : _name(name) , _clock(clock) {}
 		virtual ~Log() {}
 		const Werk::Clock* clock() const { return _clock; }
 		const std::string& name() const { return _name; }

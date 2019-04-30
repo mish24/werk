@@ -60,7 +60,7 @@ public:
 	//Flags the config to be reloaded in the background
 	void reloadConfig() { _reloadConfig = true; }
 
-	//Run in the background to reload
+	//Run in the background to reload, calls the reloadConfig for the configsource
 	void execute() override;
 
 	//Run on whatever thread the configurables live on
@@ -68,7 +68,7 @@ public:
 
 	//Basic value-as-string accessor - this is the method that every inheriting class must override (return NULL if the key is missing)
 	const char *getStringRaw(const std::string &key) const {
-		const ConfigValuesT * const values = _values;
+		const ConfigValuesT* const values = _values;
 		auto i = values->find(key);
 		return i == values->end() ? nullptr : i->second.c_str();
 	}

@@ -19,7 +19,7 @@ namespace Werk {
 
 	public:
 
-		AsyncLog(const std::string& name, Werk::Clock* clock, FILE* file=stdout, const std::string& taskname="Log") :
+		AsyncLog(const std::string& name, const Werk::Clock* clock, FILE* file=stdout, const std::string& taskname="Log") :
 		Log(name, clock), Action(taskname),_file(file) {}
 
 		virtual void log(LogLevel level, const char* format, ...) override;
