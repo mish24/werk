@@ -20,6 +20,7 @@ namespace Werk {
 		}
 
 		~BackgroundThread() { stop(); }
+		bool stopped() const { return _stopped; }
 
 		uint64_t frequencyNs() const { return _frequencyNs; }
 		void setFrequencyNs(long frequencyNs) { _frequencyNs = frequencyNs; }
@@ -34,6 +35,7 @@ namespace Werk {
 				_running = false;
 				_thread.join();
 			}
+			_stopped = true;
 		}
 
 	private:
@@ -43,6 +45,7 @@ namespace Werk {
 		volatile uint64_t _frequencyNs;
 		volatile bool _running = true;
 		std::thread _thread;
+		volatile bool _stopped = false;
 
 		void backgroundThread();
 	};

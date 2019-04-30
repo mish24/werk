@@ -24,6 +24,8 @@ namespace Werk {
 
 	public:
 		ApplicationContext(const std::string& logFilePath);
+		~ApplicationContext();
+		void shutdown();
 
 		//background thread and tasks
 		BackgroundThread& backgroundThread() { return _backgroundThread; }

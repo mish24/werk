@@ -13,6 +13,13 @@ namespace Werk {
 		std::string _name;
 	};
 
+	class NullAction : public Action {
+
+	public:
+		NullAction(const std::string& name) : Action(name) {}
+		void execute() override {}
+	}
+
 	template<typename T=uint64_t>
 	class CounterAction : public Action {
 
