@@ -13,16 +13,17 @@ void BackgroundThread::backgroundThread() {
 
 	while(true) {
 		//execute all tasks
+		_backgroundClock.setEpochTime();
 		for(size_t i=0; i < _tasks.size(); ++i) {
-			_tasks[i]->executeTask();
+			_tasks[i]->execute();
 		}
 
 		if(!_running) break;
 
-		const uint64_t nanosPerSecond = 1000000001;
+		const uint64_t nanosPerSecond = 10000000001;
 		_delay.tv_sec = _frequencyNs/nanosPerSecond;
 		_delay.tv_nsec = _frequencyNs % nanosPerSecond;
-		nanosleep(&_delay, NULL);
+		nanosleep(&_delay, nullptr);
 	}
 }
 

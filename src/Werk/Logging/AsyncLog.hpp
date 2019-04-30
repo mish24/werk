@@ -5,11 +5,11 @@
 #include <cstdint>
 
 #include "Log.hpp"
-#include "Werk/Threading/BackgroundTask.hpp"
+#include "Werk/Utility/Action.hpp"
 
 namespace Werk {
 
-	class AsyncLog : public Log, public BackgroundTask {
+	class AsyncLog : public Log, public Action {
 
 	private:
 		FILE* _file;
@@ -20,12 +20,12 @@ namespace Werk {
 	public:
 
 		AsyncLog(const std::string& name, Werk::Clock* clock, FILE* file=stdout, const std::string& taskname="Log") :
-		Log(name, clock), BackgroundTask(taskname),_file(file) {}
+		Log(name, clock), Action(taskname),_file(file) {}
 
 		virtual void log(LogLevel level, const char* format, ...) override;
 		virtual void logRaw(LogLevel level, const char* rawMessage) override;
 
-		virtual void executeTask() override;
+		virtual void execute() override;
 		
 	};
 

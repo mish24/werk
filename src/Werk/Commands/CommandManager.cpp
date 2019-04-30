@@ -27,7 +27,7 @@ namespace Werk {
 		return command->execute(arguments);
 	}
 
-	CommandAction* CommandManager::newCommandAction(const std::string& commandLine) {
+	CommandAction* CommandManager::newCommandAction(const std::string& name ,const std::string& commandLine) {
 		std::vector<std::string> arguments;
 		boost::split(arguments, commandLine, boost::is_any_of(" \t"));
 		const std::string& commandName = arguments[0];
@@ -39,7 +39,7 @@ namespace Werk {
 		}
 
 		Command* command = commandIter->second;
-		CommandAction* commandAction = new CommandAction(command,arguments);
+		CommandAction* commandAction = new CommandAction(name,command,arguments);
 		_log->log(LogLevel::INFO, "CommandAction created for %s command", commandName.c_str());
 		return commandAction;
 	}

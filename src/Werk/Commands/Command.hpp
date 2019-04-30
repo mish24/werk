@@ -23,7 +23,7 @@ namespace Werk {
 	public:
 		NullCommand() : Command("Null command -- does nothing.") {}
 
-		virtual bool execute(const std::vector<std::string>&) {
+		virtual bool execute(const std::vector<std::string>&) override {
 			return true;
 		}
 	};
@@ -41,7 +41,7 @@ namespace Werk {
 
 	public:
 
-		CommandAction(Command* command, std::vector<std::string>& arguments) : _command(command), 
+		CommandAction(const std::string& name, Command* command, std::vector<std::string>& arguments) :Action(name), _command(command), 
 		_arguments(arguments) {}
 
 		void execute() override {
