@@ -8,6 +8,9 @@
 
 namespace Werk {
 
+	/*
+	standard application context with all basic components
+	*/
 	class ApplicationContext {
 
 	private:
@@ -30,6 +33,7 @@ namespace Werk {
 		AsyncLog* stdoutLog() { return _stdoutLog; }
 		const AsyncLog* stdoutLog() const { return _stdoutLog; }
 		Config* config() { return _config; }
+		const Config* config() const { return _config; }
 		const Clock& realTimeClock() const { return _realTimeClock; }
 		CommandManager* commandManager() { return _commandManager; }
 		const CommandManager* commandManager() const { return _commandManager; }
