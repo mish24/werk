@@ -2,14 +2,14 @@
 
 #include "Werk/Math/OrderStatistics.hpp"
 #include "Werk/Math/SummaryStatistics.hpp"
+#include "Werk/Utility/NamedObject.hpp"
 
 namespace Werk {
-	class Profile {
+	class Profile : public NamedObject {
 	private:
 		uint64_t _startTime = 0;
 		//samples used for approximating 
 		//fractiles efficiently
-		std::string _name;
 		uint64_t _sampleSize;
 		OrderStatistics<uint64_t> _orderStatistics;
 
@@ -25,10 +25,9 @@ namespace Werk {
 
 
 	public:
-		Profile(const std::string& name  ,uint64_t sampleSize=100) : _name(name), _sampleSize(sampleSize) {}
+		Profile(const std::string& name  ,uint64_t sampleSize=100) : NamedObject(name), _sampleSize(sampleSize) {}
 
 		uint64_t sampleSize() const { return _sampleSize; }
-		const std::string& name() { return _name; }
 
 		const OrderStatistics<uint64_t>& orderStatistics() const {
 			return _orderStatistics;
@@ -106,7 +105,7 @@ namespace Werk {
 		}
 
 		void writeJson(FILE *file) {
-		fprintf(file, "{\"name\": \"%s\", \"min\": ", _name.c_str());
+		fprintf(file, "{\"name\": \"%s\", \"min\": ", name().c_str());
 		_minStatistics.writeJson(file);
 		fprintf(file, ", \"f25\": ");
 		_f25Statistics.writeJson(file);

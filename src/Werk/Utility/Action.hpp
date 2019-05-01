@@ -1,16 +1,14 @@
 #pragma once
 
+#include "Werk/Utility/NamedObject.hpp"
+
 namespace Werk {
 
-	class Action {
+	class Action : public NamedObject {
 
 	public:
-		Action(const std::string& name) : _name(name) {}
-		const std::string& name() const { return _name; }
+		Action(const std::string& name) : NamedObject(name) {}
 		virtual void execute() = 0;
-
-	private:
-		std::string _name;
 	};
 
 	class NullAction : public Action {
@@ -18,7 +16,7 @@ namespace Werk {
 	public:
 		NullAction(const std::string& name) : Action(name) {}
 		void execute() override {}
-	}
+	};
 
 	template<typename T=uint64_t>
 	class CounterAction : public Action {
@@ -32,5 +30,21 @@ namespace Werk {
 		T count() const { return _count; }
 		void reset() const { _count = 0;}
 		void execute() override { _count += 1; }
+	};
+
+	template<typename T=bool>
+	class LatchAction : public Action {
+
+	private:
+		T _flag = false;
+
+	public:
+		LatchAction(const std::string& name) : Action(name) {}
+
+		bool flag() const { return _flag; }
+		void set() { _flag = true; }
+		void reset() { _flag = false; }
+
+		void execute() override { set(); }		
 	};
 }

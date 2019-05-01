@@ -6,19 +6,18 @@
 
 #include "LogMessage.hpp"
 #include "Werk/OS/Time.hpp"
+#include "Werk/Utility/NamedObject.hpp"
 
-namespace Werk {
+namespace Werk  {
 
-	class Log {
+	class Log : public NamedObject {
 
 		const Werk::Clock* _clock;
-		std::string _name;
 
 	public:
-		Log(const std::string& name, const Werk::Clock* clock) : _name(name) , _clock(clock) {}
+		Log(const std::string& name, const Werk::Clock* clock) : NamedObject(name) , _clock(clock) {}
 		virtual ~Log() {}
 		const Werk::Clock* clock() const { return _clock; }
-		const std::string& name() const { return _name; }
 
 		virtual void logRaw(LogLevel level, const char* message)=0;
 		virtual void log(LogLevel level, const char* format, ...)=0;
