@@ -1,4 +1,5 @@
 #include "ApplicationContext.hpp"
+#include "Werk/OS/Signals.hpp"
 
 #include <cstdio>
 
@@ -16,6 +17,8 @@ namespace Werk {
 		_backgroundThread.addTask(_log);
 		_log->logRaw(LogLevel::SUCCESS, "<Log> initialized");
 		_log->logRaw(LogLevel::INFO, "Initializing other subsystems now.");
+
+		setupSegfaultHandler();
 
 		_stdoutLog = new AsyncLog("stdoutLog", &_backgroundThread.backgroundClock());
 		_backgroundThread.addTask(_stdoutLog);
