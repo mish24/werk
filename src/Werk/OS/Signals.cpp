@@ -19,7 +19,7 @@ namespace Werk {
 		}
 
 		std::printf("\n\n********************** Bus Error ***********************\n\n");
-		std::printf("Faulting address : 0x%1x\n Cause: %s (%d)\n", (intptr_t)info->si_addr, cause, info->si_code);
+		std::printf("Faulting address : 0x%p\n Cause: %s (%d)\n", info->si_addr, cause, info->si_code);
 		std::abort();
 	}
 
@@ -32,7 +32,7 @@ namespace Werk {
 			default : cause = "Unknown";
 		}
 		std::printf("\n\n***************** Segmentation fault ******************\n\n");
-		std::printf("Faulting address: 0x%1x\nCause: %s (%d)\n", (intptr_t)info->si_addr, cause, info->si_code);
+		std::printf("Faulting address: 0x%p\nCause: %s (%d)\n",info->si_addr, cause, info->si_code);
 		std::abort();
 	}
 

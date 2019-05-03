@@ -17,6 +17,9 @@ int main()
 	s.sample(1.0);
 	context.stdoutLog()->log(Werk::LogLevel::SUCCESS, "Hello world! count=%" PRIu64 " average=%f stddev=%f", 
 		s.count(), s.average(), s.stddev());
+
+	context.commandManager()->execute("quit");
+	context.commandManager()->execute("help");
 	context.backgroundThread().stop();
 	return 0;
 }

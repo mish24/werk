@@ -32,6 +32,8 @@ namespace Werk {
 		void execute() override { _count += 1; }
 	};
 
+	//action that sets the flag (which can e rest, like a latch)
+	//templated on type so that boolean can be made volatile if necessary
 	template<typename T=bool>
 	class LatchAction : public Action {
 
