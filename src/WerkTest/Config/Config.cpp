@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_CASE(TestBasicTypes)
     mapConfigSource.values()["Pi"] = "3.25";
     mapConfigSource.values()["Two"] = "2";
     mapConfigSource.values()["Nested.Value"] = "asdf";
-    c.registerConfigSource(&mapConfigSource);
+    c.addConfigSource(&mapConfigSource);
     c.reloadConfig();
     c.execute();
 
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(TestLoadFile)
     Werk::Config c("config", &log);
 
     Werk::IniConfigSource iniConfigSource("src/WerkTest/Config/TestConfig.ini");
-    c.registerConfigSource(&iniConfigSource);
+    c.addConfigSource(&iniConfigSource);
     c.reloadConfig();
     c.execute();
 

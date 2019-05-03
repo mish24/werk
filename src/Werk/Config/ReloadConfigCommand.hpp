@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/algortihms/string/join.hpp>
+#include <boost/algorithm/string/join.hpp>
 
 #include "Werk/Commands/Command.hpp"
 #include "Config.hpp"

@@ -2,6 +2,7 @@
 #pragma once
 
 #include <atomic>
+#include <cassert>
 #include <cstdarg>
 #include <cstdint>
 #include <limits>
@@ -54,8 +55,8 @@ public:
 
 	virtual ~Config() {}
 
-	void registerConfigSource(ConfigSource *configSource) { _configSources.push_back(configSource); }
-	void registerConfigurable(Configurable *configurable) { _configurables.push_back(configurable); }
+	void addConfigSource(ConfigSource *configSource) { _configSources.push_back(configSource); }
+	void addConfigurable(Configurable *configurable) { _configurables.push_back(configurable); }
 
 	//Flags the config to be reloaded in the background
 	void reloadConfig() { _reloadConfig = true; }
@@ -80,6 +81,12 @@ public:
 	uint64_t getUint64(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
 
 	//TODO: more complex types e.g. durations, time
+	//utility function to change the log from stdout to a file once a config is 
+	//properly set up
+	void setLog(Log* log) {
+		assert( nullptr != log);
+		_log = log;
+	}
 
 protected:
 	//Config

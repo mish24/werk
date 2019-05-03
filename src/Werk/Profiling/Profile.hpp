@@ -104,7 +104,7 @@ namespace Werk {
 			_f99Statistics.reset();
 		}
 
-		void writeJson(FILE *file) {
+		void writeJson(FILE *file) const {
 		fprintf(file, "{\"name\": \"%s\", \"min\": ", name().c_str());
 		_minStatistics.writeJson(file);
 		fprintf(file, ", \"f25\": ");

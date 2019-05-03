@@ -11,6 +11,6 @@ namespace Werk {
 
 	public:
 		NamedObject(const std::string& name) : _name(name) {}
-		const std::string& name() { return _name; }
+		const std::string& name() const { return _name; }
 	};
 }

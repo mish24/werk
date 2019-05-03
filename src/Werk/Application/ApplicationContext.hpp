@@ -1,6 +1,10 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "Werk/Commands/CommandManager.hpp"
+#include "Werk/Config/IniConfigSource.hpp"
 #include "Werk/Config/Config.hpp"
 #include "Werk/Logging/AsyncLog.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
@@ -21,6 +25,7 @@ namespace Werk {
 		CommandManager* _commandManager;
 		Clock _realTimeClock;
 		ProfileManager _profileManager;
+		std::vector<Action*> _shutdownActions;
 
 	public:
 		ApplicationContext(const std::string& logFilePath);
@@ -32,6 +37,8 @@ namespace Werk {
 		const BackgroundThread& backgroundThread() const { return _backgroundThread; }
 		AsyncLog* log() { return _log; }
 		const AsyncLog* log() const { return _log; }
+		std::vector<Action*>& shutdownActions() { return _shutdownActions;}
+		const std::vector<Action*>& shutdownActions() const { return _shutdownActions; }
 		AsyncLog* stdoutLog() { return _stdoutLog; }
 		const AsyncLog* stdoutLog() const { return _stdoutLog; }
 		Config* config() { return _config; }

@@ -10,6 +10,7 @@ void Config::execute()
 	if (!_reloadConfig) {
 		return;
 	}
+	_reloadConfig = false;
 
 	//Select which values dictionary is not active
 	ConfigValuesT &newValues = _values.load() == &_values1 ? _values2 : _values1;
@@ -30,9 +31,10 @@ void Config::execute()
 //Run on whatever thread the configurables live on
 void Config::reloadConfigurables() {
 	//Don't reload unless changed
-	if (!_reloadConfig) {
+	if (!_changed) {
 		return;
 	}
+	_changed = false;
 
 	for (Configurable *configurable : _configurables) {
 		configurable->reloadConfig(*this);
