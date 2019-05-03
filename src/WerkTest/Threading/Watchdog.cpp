@@ -19,22 +19,22 @@ BOOST_AUTO_TEST_CASE(TestBasic) {
 	backgroundThread.addTask(&watchdog);
 	timespec delay { 0, 11l * 1000 * 1000};
 	nanosleep(&delay, nullptr);
-	BOOST_REQUIRE(!watchdog.flag());
+	BOOST_REQUIRE(!watchdog.latch());
 	//BOOST_REQUIRE_EQUAL(counterAction.count(), 0);
 
 	//and again
 	nanosleep(&delay, nullptr);
-	BOOST_REQUIRE(!watchdog.flag());
+	BOOST_REQUIRE(!watchdog.latch());
 	BOOST_REQUIRE_EQUAL(counterAction.count(), 1);
 
 	    //And again
     nanosleep(&delay, nullptr);
-    BOOST_REQUIRE(!watchdog.flag());
+    BOOST_REQUIRE(!watchdog.latch());
     BOOST_REQUIRE_EQUAL(counterAction.count(), 1);
 
     //And again -- the action only executes the first time
     nanosleep(&delay, nullptr);
-    BOOST_REQUIRE(!watchdog.flag());
+    BOOST_REQUIRE(!watchdog.latch());
     BOOST_REQUIRE_EQUAL(counterAction.count(), 1);
 
     backgroundThread.stop();

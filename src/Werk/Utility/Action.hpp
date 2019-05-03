@@ -32,21 +32,4 @@ namespace Werk {
 		void execute() override { _count += 1; }
 	};
 
-	//action that sets the flag (which can e rest, like a latch)
-	//templated on type so that boolean can be made volatile if necessary
-	template<typename T=bool>
-	class LatchAction : public Action {
-
-	private:
-		T _flag = false;
-
-	public:
-		LatchAction(const std::string& name) : Action(name) {}
-
-		bool flag() const { return _flag; }
-		void set() { _flag = true; }
-		void reset() { _flag = false; }
-
-		void execute() override { set(); }		
-	};
 }

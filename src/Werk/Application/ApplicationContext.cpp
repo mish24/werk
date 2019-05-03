@@ -9,6 +9,7 @@
 
 namespace Werk {
 
+
 	ApplicationContext::ApplicationContext(const std::string& configPath) {
 		//setup the handlers
 		// lets pull up the boostraps

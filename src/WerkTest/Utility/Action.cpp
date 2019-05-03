@@ -16,14 +16,5 @@ BOOST_AUTO_TEST_CASE(TestCounter) {
 	BOOST_REQUIRE_EQUAL(a.count(), 2);
 }
 
-BOOST_AUTO_TEST_CASE(TestLatch) {
-
-	Werk::LatchAction<> a("Latch");
-	BOOST_REQUIRE(!a.flag());
-	a.execute();
-	BOOST_REQUIRE(a.flag());
-	a.reset();
-	BOOST_REQUIRE(!a.flag());
-}
 
 BOOST_AUTO_TEST_SUITE_END()

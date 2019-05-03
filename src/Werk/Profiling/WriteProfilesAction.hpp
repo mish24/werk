@@ -6,7 +6,7 @@
 
 namespace Werk {
 
-	class WerkProfilesAction : public Action {
+	class WriteProfilesAction : public Action {
 
 	private:
 		Log* _log;
@@ -14,7 +14,7 @@ namespace Werk {
 		const std::string _path;
 
 	public:
-		WerkProfilesAction(const std::string& name, Log* log, const ProfileManager& profileManager, 
+		WriteProfilesAction(const std::string& name, Log* log, const ProfileManager& profileManager, 
 			const std::string& path) : Action(name), _log(log), _profileManager(profileManager),
 		_path(path) {}
 
@@ -25,6 +25,7 @@ namespace Werk {
 				return;
 			}
 			_profileManager.writeJson(file);
+			std::fclose(file);
 		}
 	};
 }
