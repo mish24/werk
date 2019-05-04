@@ -1,4 +1,5 @@
 #include "Signals.hpp"
+#include "Werk/Utility/Action.hpp"
 
 #include <cstdio>
 #include <cstdlib>
@@ -36,6 +37,35 @@ namespace Werk {
 		std::abort();
 	}
 
+	static Action* sighupAction = nullptr;
+	static Action* sigintAction = nullptr;
+	static Action* sigusr1Action = nullptr;
+	static Action* sigusr2Action = nullptr;
+
+	static void handleSignal(int signal, siginfo_t* /* info */, void* /* context */) {
+	//get the appropriate action
+	Action* action = nullptr;
+	switch(signal) {
+		case SIGHUP:
+			action = sighupAction;
+			break;
+		case SIGINT:
+			action = sigintAction;
+			break;
+		case SIGUSR1:
+			action = sigusr1Action;
+			break;
+		case SIGUSR2:
+			action = sigusr2Action;
+			break;
+	}
+
+	//run it
+	if(nullptr != action) {
+		action->execute();
+		}
+	}
+
 	bool setupSegfaultHandler() {
 		struct sigaction sa;
 		std::memset(&sa,0,sizeof(sa));
@@ -48,6 +78,37 @@ namespace Werk {
 		sa.sa_sigaction = handleBusError;
 		sa.sa_flags = SA_SIGINFO;
 		if(0 > sigaction(SIGBUS, &sa, nullptr)) {
+			return false;
+		}
+		return true;
+	}
+
+	bool setupSignalHandler(int signal, Action* action) {
+		struct sigaction sa;
+		//set the action
+		switch(signal) {
+			case SIGHUP:
+				sighupAction = action;
+				break;
+			case SIGINT:
+				sigintAction = action;
+				break;
+			case SIGUSR1:
+				sigusr1Action = action;
+				break;
+			case SIGUSR2:
+				sigusr2Action = action;
+				break;
+			default:
+				fprintf(stderr, "Cannot setup signal handler for signal %d - only SIGHUP, SIGINT, SIGUSR1, SIGUSR2 can be set this way", signal);
+				return false;
+		}
+
+		//register the handler
+		std::memset(&sa,0, sizeof(sa));
+		sa.sa_sigaction = handleSignal;
+		sa.sa_flags = SA_SIGINFO;
+		if(0 > sigaction(signal, &sa, nullptr)) {
 			return false;
 		}
 		return true;

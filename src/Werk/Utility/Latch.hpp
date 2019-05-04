@@ -28,7 +28,7 @@ namespace Werk {
 	private:
 		Latch<T>& _latch;
 	public:
-		ResetLatchAction(const std::string& name, const Latch<T>& latch) :
+		ResetLatchAction(const std::string& name, Latch<T>& latch) :
 		Action(name), _latch(latch) {}
 		void execute() override { _latch.reset(); }
 	};
@@ -39,7 +39,7 @@ namespace Werk {
 	private:
 		Latch<T>& _latch;
 	public:
-		SetLatchAction(const std::string& name, const Latch<T>& latch) :
+		SetLatchAction(const std::string& name, Latch<T>& latch) :
 		Action(name), _latch(latch) {}
 		void execute() override { _latch.set(); }
 	};

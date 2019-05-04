@@ -3,8 +3,9 @@
 #include "Werk/Config/ReloadConfigCommand.hpp"
 #include "Werk/Commands/QuitCommand.hpp"
 #include "Werk/Profiling/WriteProfilesAction.hpp"
-#include <boost/algorithm/string.hpp>
 
+#include <boost/algorithm/string.hpp>
+#include <signal.h>
 #include <cstdio>
 
 namespace Werk {
@@ -72,6 +73,10 @@ namespace Werk {
 		}
 
 		/************************** Finish Initialisation *************/
+
+		//setup remaining signals
+		//SIGHUP -> reload config
+		setupSignalHandler(SIGHUP, _config->getReloadConfigAction());
 		const char* startupCommandsStr = _config->getString("Application.StartupCommands");
 		if(nullptr != startupCommandsStr) {
 			//split and run each command

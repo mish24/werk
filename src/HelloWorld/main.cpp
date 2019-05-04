@@ -1,11 +1,13 @@
 #include <cstdio>
 #include <iostream>
 #include <cinttypes>
+#include <unistd.h>
 
 #include "Werk/Math/SummaryStatistics.hpp"
 #include "Werk/OS/Time.hpp"
 #include "Werk/Application/ApplicationContext.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
+#include "Werk/Logging/Loggable.hpp"
 
 //example of how to use this library
 class ShutdownAction : public Werk::Action {
@@ -36,6 +38,11 @@ int main()
 	context.shutdownActions().push_back(new ShutdownAction("Shutdown", context.log()));
 	context.commandManager()->execute("quit");
 	context.commandManager()->execute("help");
+
+	Werk::StringLoggable s1("This is a StringLoggable test...");
+	s1.logTo(context.log());
+	context.log()->logRaw(Werk::LogLevel::INFO, "Going to sleep......");
+	sleep(5);
 	context.backgroundThread().stop();
 	return 0;
 }
