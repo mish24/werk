@@ -15,6 +15,7 @@
 #include "Werk/Threading/ActionQueue.hpp"
 #include "Werk/Utility/Latch.hpp"
 
+
 namespace Werk
 {
 
@@ -55,6 +56,8 @@ public:
 	const ProfileManager &profileManager() const { return _profileManager; }
 	std::vector<Action *> &shutdownActions() { return _shutdownActions; }
 	const std::vector<Action *> &shutdownActions() const { return _shutdownActions; }
+	ActionQueue<>& foregroundActionQueue() { return _foregroundActionQueue;}
+	const ActionQueue<>& foregroundActionQueue() const { return _foregroundActionQueue; }
 
 	//Background thread and tasks
 	BackgroundThread &backgroundThread() { return _backgroundThread; }
@@ -67,6 +70,8 @@ public:
 	const AsyncLog *log() const { return _log; }
 	Config *config() { return _config; }
 	const Config *config() const { return _config; }
+	ActionQueue<>& backgroundActionQueue() { return _backgroundActionQueue; }
+	const ActionQueue<>& backgroundActionQueue() const { return _backgroundActionQueue; }
 	CommandManager *commandManager() { return _commandManager; }
 	const CommandManager *commandManager() const { return _commandManager; }
 
@@ -82,6 +87,7 @@ private:
 	Clock *_clock;
 	ProfileManager _profileManager;
 	std::vector<Action *> _shutdownActions;
+	ActionQueue<> _foregroundActionQueue { "ForegroundActionQueue"};
 	Latch<volatile bool> _quitting;
 
 	//wtf is this?

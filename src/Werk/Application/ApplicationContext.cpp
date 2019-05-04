@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <signal.h>
 
+#include "Werk/Commands/WriteCommandLogAction.hpp"
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
 #include "Werk/Console/IpcConsoleServer.hpp"
 #include "Werk/OS/Signals.hpp"
@@ -99,7 +100,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	/********** Command Manager **********/
 
-	_commandManager = new CommandManager(_log);
+	_commandManager = new CommandManager(_backgroundThread.backgroundClock() , _log);
 	
 
 	_commandManager->add("app", new ActionCommand(
@@ -119,6 +120,12 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	_commandManager->add("quit", new ActionCommand(quitAction, "Quits application cleanly."));
 
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
+
+	const char *commandLogPath = _config->getString("Application.CommandLogPath");
+	if (nullptr != commandLogPath) {
+		_log->log(LogLevel::INFO, "Writing command log to %s on shutdown.", commandLogPath);
+		_shutdownActions.push_back(new WriteCommandLogAction("WriteCommandLog", _log, *_commandManager, commandLogPath));
+	}
 
 	const char *profilesPath = _config->getString("Application.ProfilesPath");
 	if (nullptr != profilesPath) {
@@ -227,7 +234,8 @@ void ApplicationContext::run() {
 		_log->logRaw(LogLevel::ALERT, "Entering main loop...");
 		while (!_quitting.value()) {
 			//TODO: run a main loop action
-
+			//run other queued actions
+			_foregroundActionQueue.execute();
 			//Made it through another loop, set the watchdog
 			watchdog->reset();
 		}

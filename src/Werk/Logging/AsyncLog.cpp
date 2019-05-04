@@ -58,12 +58,12 @@ void AsyncLog::execute() {
 	LogMessage lmessage;
 	while(_messages.pop(lmessage)) {
 		if(lmessage.sequenceNumber != _nextSendSequenceNumber) {
-			std::fprintf(_file, "{\"t\":%" PRIu64 ",\"n\":%" PRIu64 ",\"level\":\"%s\",\"message\":\"Incorrect log sequence number; expecting %" PRIu64 " but received %" PRIu64 "\"}\n",
-				lmessage.time,
-				_nextReceiveSequenceNumber,
-				logLevels[static_cast<size_t>(LogLevel::CRITICAL)],
-				_nextReceiveSequenceNumber,
-				lmessage.sequenceNumber);
+			// std::fprintf(_file, "{\"t\":%" PRIu64 ",\"n\":%" PRIu64 ",\"level\":\"%s\",\"message\":\"Incorrect log sequence number; expecting %" PRIu64 " but received %" PRIu64 "\"}\n",
+			// 	lmessage.time,
+			// 	_nextReceiveSequenceNumber,
+			// 	logLevels[static_cast<size_t>(LogLevel::CRITICAL)],
+			// 	_nextReceiveSequenceNumber,
+			// 	lmessage.sequenceNumber);
 		}
 		_nextReceiveSequenceNumber = lmessage.sequenceNumber + 1;
 

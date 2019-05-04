@@ -8,6 +8,7 @@ namespace Werk {
 	bool CommandManager::execute(const std::string& commandLine) {
 		std::vector<std::string> arguments;
 		boost::split(arguments, commandLine, boost::is_any_of(" \t"));
+		_commandHistory.emplace_back(_clock.time(), commandLine);
 		return execute(arguments);
 	}
 

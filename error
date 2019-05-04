@@ -7,3 +7,6 @@ expected type-specifier before ‘WriteProfilesAction’
 
 
 ISO C++ forbids converting a string constant to ‘char* ------------ add const to left
+
+expected type-specifier before ‘RedoCommand’
+     _commands["redo"] = new RedoCommand(*this); -- add forward declaration in the file

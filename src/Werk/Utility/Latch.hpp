@@ -21,17 +21,6 @@ namespace Werk {
 	
 	};
 
-	//an action that resets the latch
-	template<typename T=bool>
-	class ResetLatchAction : public Action {
-
-	private:
-		Latch<T>& _latch;
-	public:
-		ResetLatchAction(const std::string& name, Latch<T>& latch) :
-		Action(name), _latch(latch) {}
-		void execute() override { _latch.reset(); }
-	};
 
 	template<typename T=bool>
 	class SetLatchAction : public Action {

@@ -1,4 +1,5 @@
 #include "Config.hpp"
+#include "Werk/Utility/Units.hpp"
 
 namespace Werk
 {
@@ -134,6 +135,48 @@ bool Config::getBool(const std::string& key, bool defaultValue, const char* help
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
 	return i->second == "true" || i->second == "True";
+}
+
+uint64_t Config::getStorageAmount(const std::string &key, uint64_t defaultValue, const char *help) const
+{
+	const char *stringValue = getStringRaw(key);
+	if (stringValue == nullptr) {
+		_log->log(LogLevel::CONFIG, "<Config> [%s] = %" PRIu64 " [DEFAULT]%s%s",
+			key.c_str(),
+			defaultValue,
+			help == nullptr ? "" : " -- ",
+			help == nullptr ? "" : help);
+		return defaultValue;
+	}
+
+	uint64_t value = parseUnits(stringValue, STORAGE_UNITS);
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s (%" PRIu64 ")%s%s",
+		key.c_str(),
+		stringValue, value,
+		help == nullptr ? "" : " -- ",
+		help == nullptr ? "" : help);
+	return value;
+}
+
+uint64_t Config::getTimeAmount(const std::string &key, uint64_t defaultValue, const char *help) const
+{
+	const char *stringValue = getStringRaw(key);
+	if (stringValue == nullptr) {
+		_log->log(LogLevel::CONFIG, "<Config> [%s] = %" PRIu64 " [DEFAULT]%s%s",
+			key.c_str(),
+			defaultValue,
+			help == nullptr ? "" : " -- ",
+			help == nullptr ? "" : help);
+		return defaultValue;
+	}
+
+	uint64_t value = parseUnits(stringValue, TIME_UNITS);
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s (%" PRIu64 ")%s%s",
+		key.c_str(),
+		stringValue, value,
+		help == nullptr ? "" : " -- ",
+		help == nullptr ? "" : help);
+	return value;
 }
 
 }

@@ -87,15 +87,21 @@ def build(ctx):
 	ctx.add_post_fun(_postBuild)
 	ctx.recurse('src')
 
-def test(ctx):
+def test(ctx, valgrind=False):
 	stars = '*'*30
 	Logs.info('%s Running Unit Tests %s' % (stars, stars))
 	binary = 'build/test/WerkTest'
 	if not os.path.exists(binary):
 		raise RuntimeError('Missing binary: %s' % binary)
+	if valgrind:
+		binary = 'valgrind --error-exitcode=99 ' + binary
+
 	exitCode = os.system(binary)
 	if exitCode != 0:
 		raise RuntimeError('Non-zero return %s -> %d' %(binary,exitCode))
+
+def valgrind(ctx):
+	test(ctx, valgrind=True)
 
 def hello(ctx):
 	stars = '*'*30

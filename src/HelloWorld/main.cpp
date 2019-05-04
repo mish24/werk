@@ -8,6 +8,7 @@
 #include "Werk/Application/ApplicationContext.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
 #include "Werk/Logging/Loggable.hpp"
+#include "Werk/Threading/Timer.hpp"
 
 //example of how to use this library
 class ShutdownAction : public Werk::Action {
@@ -27,6 +28,13 @@ public:
 int main()
 {
 	Werk::ApplicationContext context("src/HelloWorld/Test.ini");
+
+	Werk::StringLoggable sl("Checking in...");
+	Werk::Timer timer("Timer", &context.backgroundThread().backgroundClock(),
+		new Werk::LogAction("TimerLog", &sl, context.log()),
+		60l * 1000 * 1000 * 1000);
+	context.backgroundThread().addTask(&timer);
+
 	context.stdoutLog()->logRaw(Werk::LogLevel::INFO, "Starting.....");
 
 	Werk::SummaryStatistics<double> s;

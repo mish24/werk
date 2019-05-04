@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_CASE(TestBasics) {
 BOOST_AUTO_TEST_CASE(TestSetResetLatchActions) {
 	Werk::Latch<> l;
 	Werk::SetLatchAction<> s("SetLatch", l);
-	Werk::ResetLatchAction<> r("ResetLatch", l);
+	Werk::ResetAction<Werk::Latch<> > r("ResetLatch", l);
 
 	BOOST_REQUIRE(!l.value());
 	s.execute();
