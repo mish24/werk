@@ -42,7 +42,8 @@ int main()
 	sleep(15);
 	context.shutdownActions().push_back(new ShutdownAction("Shutdown", context.log()));
 	context.commandManager()->execute("quit");
-	context.log()->logRaw(Werk::LogLevel::INFO, "Done.");
+	context.log()->logRaw(Werk::LogLevel::ALERT, "Staring main loop...");
+	context.run();
 
 	//This will be called automatically when the context falls out of scope, but is left in as an example
 	context.shutdown();

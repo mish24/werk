@@ -8,8 +8,7 @@
 #include "Werk/Console/IpcConsoleServer.hpp"
 #include "Werk/OS/Signals.hpp"
 #include "Werk/Profiling/WriteProfilesAction.hpp"
-
-#include "Werk/Commands/QuitCommand.hpp"
+#include "Werk/Threading/Watchdog.hpp"
 
 namespace Werk
 {
@@ -84,8 +83,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	//Set the instance ID
 	_instanceId = _config->getString("Application.InstanceID", "", "ID of this instance of the application");
 
-	_debug = _config->getBool("Application.Debug", false, "Indicates whether the application should output additional Debug
-		info (even in release builds)");
+	_debug = _config->getBool("Application.Debug", false, "Indicates whether the application should output additional Debug info.");
 
 	//Real time mode or not? In non-real time mode, a secondary clock is instantiated
 	_realTime = _config->getBool("Application.RealTime", true,
@@ -117,8 +115,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 		_config->getReloadConfigAction(),
 		"Reloads the configuration."));
 
-	Command *quitCommand = new QuitCommand(this);
-	_commandManager->add("quit", quitCommand);
+	_commandManager->add("quit", new ActionCommand(new SetLatchAction<volatile bool>("Quit", _quitting),
+		"Quits the application cleanly."));
+
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
 
 	const char *profilesPath = _config->getString("Application.ProfilesPath");
@@ -211,5 +210,28 @@ void ApplicationContext::shutdown()
 	//Cleanup the console
 	_consoleServer.reset();
 }
+
+void ApplicationContext::run() {
+	//setup the background watchdog timer
+	uint64_t watchdogInterval = _config->getUint64("Application.watchdogInterval", 0, "Interval of the main thread watchdog (ns)");
+	uint64_t watchdogAllowedMisses = _config->getUint64("Application.WatchdogAllowedMisses", 1, "Number of times the main thread can miss the watchdog");
+	Watchdog* watchdog = new Watchdog("Watchdog", &_backgroundThread.backgroundClock(),
+		new LogAction("WatchdogWarning", new StringLoggable("Missed watchdog!", LogLevel::WARNING), _log),
+		watchdogInterval, watchdogAllowedMisses);
+
+		if (0 != watchdogInterval) {
+		//TODO: check against background thread frequency
+		_backgroundThread.addTask(watchdog);
+		}
+
+		while (!_quitting.value()) {
+			//TODO: run a main loop action
+
+			//Made it through another loop, set the watchdog
+			watchdog->reset();
+		}
+
+		shutdown();
+	}
 
 }

@@ -19,8 +19,9 @@ namespace Werk {
 		EchoCommand(Log* log, LogLevel level=LogLevel::INFO) :
 			Command("Echoes the arguments back to the log"), _log(log), _level(level) {}
 
-			virtual bool execute(const std::vector<std::string>& arguments) {
-				_log->logRaw(_level, boost::algorithm::join(arguments, " ").c_str());
+			bool execute(const std::vector<std::string>& arguments) override {
+				//join all but the first argument
+				_log->logRaw(_level, boost::algorithm::join(boost::make_iterator_range(arguments.begin() + 1, arguments.end()), " ").c_str());
 				return true;
 			}
 

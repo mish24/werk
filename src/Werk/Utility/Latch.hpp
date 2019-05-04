@@ -43,4 +43,22 @@ namespace Werk {
 		Action(name), _latch(latch) {}
 		void execute() override { _latch.set(); }
 	};
+
+	template<typename T=bool>
+	class ConditionalAction : public Action {
+
+	private:
+		Latch<T>& _latch;
+		Action* _action;
+
+	public:
+		ConditionalAction(const std::string& name, Latch<T>& latch, Action* action) :
+		Action(name), _latch(latch), _action(action) {}
+
+		void execute() override {
+			if(_latch.value()) {
+				_action->execute();
+			}
+		}
+	};
 }

@@ -83,7 +83,7 @@ double Config::getDouble(const std::string &key, double defaultValue, const char
 int64_t Config::getInt64(const std::string &key, int64_t defaultValue, const char *help) const {
 	const char *stringValue = getStringRaw(key);
 	if (stringValue == nullptr) {
-		_log->log(LogLevel::CONFIG, "<Config> [%s] = %" PRIi64 " [DEFAULT]%s%s",
+		_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
 			key.c_str(),
 			defaultValue,
 			help == nullptr ? "" : " -- ",
@@ -91,7 +91,7 @@ int64_t Config::getInt64(const std::string &key, int64_t defaultValue, const cha
 		return defaultValue;
 	}
 
-	_log->log(LogLevel::CONFIG, "<Config> [%s] = %" PRIi64 "%s%s",
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
 		key.c_str(),
 		stringValue,
 		help == nullptr ? "" : " -- ",

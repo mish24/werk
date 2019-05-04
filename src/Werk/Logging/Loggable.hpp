@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Werk/Utility/Action.hpp"
+#include "LogMessage.hpp"
 
 namespace Werk {
 
@@ -20,9 +21,11 @@ namespace Werk {
 
 	private:
 		std::string _value;
+		LogLevel _level;
 
 	public:
-		StringLoggable(const std::string value) : _value(value) {}
+		StringLoggable(const std::string value, LogLevel level=LogLevel::INFO) : 
+		_value(value), _level(level) {}
 		const std::string& value() const { return _value; }
 		void logTo(Log* log) const override;
 	};
