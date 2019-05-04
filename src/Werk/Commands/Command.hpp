@@ -51,4 +51,22 @@ namespace Werk {
 		std::vector<std::string>& arguments() { return _arguments; }
 		const std::vector<std::string>& arguments() const { return _arguments; }
 	};
+
+	/*
+	a command that performs an action
+	*/
+	class ActionCommand : public Command {
+
+	private:
+		Action* _action;
+
+	public:
+		ActionCommand(Action* action, const std::string& help) :
+		Command(help), _action(action) {}
+
+		virtual bool execute(const std::vector<std::string>& /*arguments*/) override {
+		_action->execute();
+		return true;
+	}
+	};
 }

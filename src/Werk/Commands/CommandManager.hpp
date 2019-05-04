@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Werk/Commands/Command.hpp"
+#include "Werk/Logging/Loggable.hpp"
 #include "HelpCommand.hpp"
 #include "Werk/Commands/EchoCommand.hpp"
 #include "Werk/Logging/Log.hpp"
@@ -11,7 +12,7 @@
 
 namespace Werk {
 
-	class CommandManager {
+	class CommandManager : public Loggable {
 
 	private:
 		Log* _log;
@@ -20,11 +21,13 @@ namespace Werk {
 	public:
 		CommandManager(Log* log, bool defaultCommands=true) : _log(log) {
 			if(defaultCommands) {
-				_commands["help"] = new HelpCommand(log, this);
+				//_commands["help"] = new HelpCommand(log, this);
 				_commands["echo"] = new EchoCommand(log);
 				_commands["null"] = new NullCommand();
 				_commands["warning"] = new EchoCommand(log, LogLevel::WARNING);
 				_commands["error"] = new EchoCommand(log, LogLevel::ERROR);
+				_commands["?"] = _commands["help"] = new ActionCommand(new LogAction("LogHelp", this, _log), 
+					"Logs command help.");
 				}
 			}
 
@@ -39,5 +42,7 @@ namespace Werk {
 		bool execute(const std::vector<std::string>& arguments);
 
 		CommandAction* newCommandAction(const std::string& name ,const std::string& commandLine);
+
+		void logTo(Log* log) const override;
 	};
 }

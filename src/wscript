@@ -24,3 +24,15 @@ def build(bld):
 		target = '../bin/WerkProfile',
 		use = ['Werk'],
 		)
+
+	bld.program(
+		source = 'IpcConsoleCleanup/main.cpp',
+		target = '../bin/IpcConsoleCleanup',
+		use = ['Werk'],
+		)
+
+	bld.program(
+		source = 'IpcConsoleClient/main.cpp',
+		target = '../bin/IpcConsoleClient',
+		use = ['Werk'],
+		)

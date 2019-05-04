@@ -67,7 +67,7 @@ def configure(ctx):
 
 	#Setup libraries
 	ctx.env.LIB = [
-		'pthread',
+		'pthread', 'rt'
 		]
 
 def build(ctx):
@@ -89,11 +89,16 @@ def hello(ctx):
 	stars = '*'*30
 	Logs.info('%s Running hello %s' % (stars, stars))
 	os.system("build/bin/HelloWorld")
+	
+def console(ctx):
+	stars = '*'*30
+	Logs.info('%s Running console %s' % (stars, stars))
+	os.system("build/bin/IpcConsoleClient")
 
 def profile(ctx):
 	stars = '*'*30;
 	Logs.info('%s Running Profiles %s' % (stars, stars))
-	os.system("build/bin/WerkProfile")
+	binary = "build/bin/WerkProfile"
 	if not os.path.exists(binary):
 		raise RuntimeError('Missing binary: %s' % binary)
 	exitCode = os.system(binary)
