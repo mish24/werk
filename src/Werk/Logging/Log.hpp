@@ -4,11 +4,28 @@
 #include <string>
 #include <cstdio>
 
-#include "LogMessage.hpp"
 #include "Werk/OS/Time.hpp"
 #include "Werk/Utility/NamedObject.hpp"
 
 namespace Werk  {
+
+		/**
+	 * Level of the log, ordered to allow simple filtering.
+	 */
+	enum class LogLevel
+	{
+		CRITICAL,
+		ERROR,
+		WARNING,
+		ALERT,
+		SUCCESS,
+		CONFIG,
+		INFO,
+		DETAIL,
+		JSON,
+		TRACE
+	};
+	extern const char *logLevels[];
 
 	class Log : public NamedObject {
 

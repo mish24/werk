@@ -1,5 +1,6 @@
 #include "IpcConsoleClient.hpp"
 #include "ConsoleMessage.hpp"
+#include "Werk/version.hpp"
 
 namespace Werk {
 

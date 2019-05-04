@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "Werk/version.hpp"
 #include "Werk/Console/IpcConsoleClient.hpp"
 
 int main(int argc, char **argv)
@@ -12,6 +13,10 @@ int main(int argc, char **argv)
 		std::cout << "Usage: ./IpcConsoleClient <NAME>" << std::endl;
 		return 1;
 	}
+	else if(0 == strcmp(argv[1], "--version")) {
+			std::cout << "Version: " << Werk::getVersion() << std::endl;
+			return 0;
+		}
 
 	try {
 		std::cout << "Connecting to " << argv[1] << "..." << std::endl;

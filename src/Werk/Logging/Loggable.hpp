@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Werk/Utility/Action.hpp"
-#include "LogMessage.hpp"
+#include "Log.hpp"
 
 namespace Werk {
 

@@ -1,6 +1,7 @@
 def build(bld):
 	#main static library is created
 	bld.stlib(
+		defines = ['WERK_VERSION=\"%s\"' % bld.env.VERSION],
 		source = bld.path.ant_glob('Werk/**/*.cpp',excl=[]),
 		target = '../lib/Werk', 
 		name = 'Werk', #this name is appened to lib -> libwerk2.a

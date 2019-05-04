@@ -41,6 +41,7 @@ def handleLine(line):
 
 def main():
 	#TODO parse arguments
+	quitting = False
 	while True:
 		try:
 			line = sys.stdin.readline()
@@ -49,7 +50,11 @@ def main():
 			value = json.loads(line)
 			handleLine(value)
 		except KeyboardInterrupt:
-			break
+			if quitting:
+				break
+			else:
+				quitting = True;
+				continue
 		except Exception as e:
 			print('Exception thrown: %s -- %s' % (type(e), e))
 			break

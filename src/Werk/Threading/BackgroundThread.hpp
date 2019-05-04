@@ -8,6 +8,7 @@
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Utility/Action.hpp"
 #include "Werk/Logging/Loggable.hpp"
+#include "Werk/Utility/Latch.hpp"
 
 namespace Werk
 {
@@ -28,11 +29,15 @@ public:
 	const Profile &profile() const { return _profile; }
 	const Action* action() const { return _action; }
 
+	Latch<volatile bool>& active() { return _active; }
+	const Latch<volatile bool>& active() const { return _active; }
+
 	void execute();
 
 private:
 	Action *_action;
 	Profile _profile;
+	Latch<volatile bool> _active { true };
 };
 
 /**

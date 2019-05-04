@@ -9,6 +9,7 @@
 #include "Werk/Commands/EchoCommand.hpp"
 #include "Werk/Logging/Log.hpp"
 #include "Werk/Commands/HelpCommand.hpp"
+#include "Werk/version.hpp"
 
 namespace Werk {
 
@@ -28,6 +29,8 @@ namespace Werk {
 				_commands["error"] = new EchoCommand(log, LogLevel::ERROR);
 				_commands["?"] = _commands["help"] = new ActionCommand(new LogAction("LogHelp", this, _log), 
 					"Logs command help.");
+				_commands["version"] = new ActionCommand(new LogAction("LogVersion", new StringLoggable(std::string("Version: ") + getVersion()), log),
+					"Logs the version of Werk underlying the application");
 				}
 			}
 

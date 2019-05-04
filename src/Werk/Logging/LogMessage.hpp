@@ -3,22 +3,9 @@
 #include <cstring>
 #include <cstdint>
 
+#include "Werk/Logging/Log.hpp"
+
 namespace Werk {
-
-	enum class LogLevel {
-		CRITICAL,
-		ERROR,
-		WARNING,
-		ALERT,
-		SUCCESS,
-		CONFIG,
-		INFO,
-		DETAIL,
-		JSON,
-		TRACE
-	};
-
-	extern const char* logLevels[];
 
 	//used for passing log messages bw threads
 	struct LogMessage {
