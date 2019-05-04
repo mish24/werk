@@ -14,7 +14,7 @@ namespace Werk {
 	public:
 		LogManager() {
 			_nullLog = new NullLog("null");
-			registerLog(_nullLog);
+			add(_nullLog);
 		}
 
 		NullLog* nullLog() { return _nullLog; }
@@ -24,7 +24,7 @@ namespace Werk {
 			return i == _logs.end() ? nullptr : i->second;
 		}
 
-		void registerLog(Log* log) {
+		void add(Log* log) {
 			_logs[log->name()] = log;
 		}
 	};

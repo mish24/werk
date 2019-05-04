@@ -17,6 +17,7 @@ namespace Werk {
 		setupSegfaultHandler();
 		//stdout log
 		_stdoutLog = new AsyncLog("StdoutLog", &_backgroundThread.backgroundClock());
+		_logManager.add(_stdoutLog);
 		_backgroundThread.addTask(_stdoutLog);
 		//config
 		_config = new Config("Config", _stdoutLog);
@@ -30,7 +31,7 @@ namespace Werk {
 		if(nullptr != configPathStr) {
 			//add all new configs
 			std::vector<std::string> configPaths;
-			boost::split(configPaths, configPathStr, boost::is_any_of(","));
+			boost::split(configPaths, configPathStr, boost::is_any_of(";"));
 			for(auto& path : configPaths) {
 				_config->addConfigSource(new IniConfigSource(path));
 			}
@@ -51,6 +52,7 @@ namespace Werk {
 			file = stderr;
 		}
 		_log = new AsyncLog("Log", &_backgroundThread.backgroundClock(), file);
+		_logManager.add(_log);
 		_backgroundThread.addTask(_log);
 		_config->setLog(_log);
 		_log->logRaw(LogLevel::SUCCESS, "<Log> initialized.");
@@ -70,20 +72,45 @@ namespace Werk {
 		}
 
 		/************************** Finish Initialisation *************/
+		const char* startupCommandsStr = _config->getString("Application.StartupCommands");
+		if(nullptr != startupCommandsStr) {
+			//split and run each command
+			boost::split(_startupCommands, startupCommandsStr, boost::is_any_of(";"));
+			for(auto& command : _startupCommands) {
+				_commandManager->execute(command);
+			}
+		}
 		_log->logRaw(LogLevel::SUCCESS, "<ApplicationContext> initialized.");
 	}
 
 	ApplicationContext::~ApplicationContext() {
-		if(!_backgroundThread.stopped()) {
+		if(!isShutdown()) {
 			shutdown();
 		}
+	}
+
+	bool ApplicationContext::isShutdown() {
+		return _backgroundThread.stopped();
 	}
 
 
 	void ApplicationContext::shutdown() {
 		if(_backgroundThread.stopped()) {
 			fprintf(stderr, "ApplicationContext::shutdown - Already shut down.\n");
+			return;
 		}
+
+		//load and run shutdown commands
+		const char* shutdownCommandsStr = _config->getString("Application.ShutdownCommands");
+		if(nullptr != shutdownCommandsStr) {
+			//split on ; ans run each command
+			boost::split(_shutdownCommands, shutdownCommandsStr, boost::is_any_of(";"));
+			for(auto& command : _shutdownCommands) {
+				_commandManager->execute(command);
+			}
+		}
+
+		//run shutdown actions
 		_log->logRaw(LogLevel::INFO, "Running shutdown actions...");
 		for(Action* action : _shutdownActions) {
 			action->execute();

@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_SUITE(WatchdogTest)
 BOOST_AUTO_TEST_CASE(TestBasic) {
 
 	Werk::CounterAction<volatile uint64_t> counterAction("counter");
-	Werk::BackgroundThread backgroundThread(1l * 1000 * 1000);
+	Werk::BackgroundThread backgroundThread(nullptr, 1l * 1000 * 1000);
 	Werk::Watchdog watchdog("watchdog", &backgroundThread.backgroundClock(),
 		&counterAction, 20l * 1000 * 1000, 0);
 

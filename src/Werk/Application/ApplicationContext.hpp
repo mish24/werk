@@ -6,6 +6,7 @@
 #include "Werk/Commands/CommandManager.hpp"
 #include "Werk/Config/IniConfigSource.hpp"
 #include "Werk/Config/Config.hpp"
+#include "Werk/Logging/LogManager.hpp"
 #include "Werk/Logging/AsyncLog.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
@@ -18,18 +19,22 @@ namespace Werk {
 	class ApplicationContext {
 
 	private:
-		BackgroundThread _backgroundThread;
+		BackgroundThread _backgroundThread{&_profileManager};
 		AsyncLog* _log;
 		AsyncLog* _stdoutLog;
 		Config* _config;
+		LogManager _logManager;
 		CommandManager* _commandManager;
 		Clock _realTimeClock;
 		ProfileManager _profileManager;
 		std::vector<Action*> _shutdownActions;
+		std::vector<std::string> _startupCommands;
+		std::vector<std::string> _shutdownCommands;
 
 	public:
 		ApplicationContext(const std::string& logFilePath);
 		~ApplicationContext();
+		bool isShutdown();
 		void shutdown();
 
 		//background thread and tasks
@@ -48,5 +53,11 @@ namespace Werk {
 		const CommandManager* commandManager() const { return _commandManager; }
 		ProfileManager& profileManager() { return _profileManager; }
 		const ProfileManager& profileManager() const { return _profileManager; }
+		LogManager& logManager() { return _logManager; }
+		const LogManager& logManager() const { return _logManager; }
+		std::vector<std::string>& startupCommands() { return _startupCommands; }
+		const std::vector<std::string>& startupCommands() const { return _startupCommands; }
+		std::vector<std::string>& shutdownCommands() { return _shutdownCommands; }
+		const std::vector<std::string>& shutdownCommands() const { return _shutdownCommands; }
 	};
 }

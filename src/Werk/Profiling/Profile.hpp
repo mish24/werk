@@ -8,9 +8,11 @@ namespace Werk {
 	class Profile : public NamedObject {
 	private:
 		uint64_t _startTime = 0;
+		uint64_t _count = 0;
 		//samples used for approximating 
 		//fractiles efficiently
 		uint64_t _sampleSize;
+		uint64_t _warmupSize;
 		OrderStatistics<uint64_t> _orderStatistics;
 
 		//stats taken from samples of the orderStats every _sampleSize samples
@@ -28,6 +30,8 @@ namespace Werk {
 		Profile(const std::string& name  ,uint64_t sampleSize=100) : NamedObject(name), _sampleSize(sampleSize) {}
 
 		uint64_t sampleSize() const { return _sampleSize; }
+		uint64_t count() const{ return _count; }
+		//const RangedSummaryStatistics<uint64_t>& warmupStatistics() const { return _warmupStatistics;}
 
 		const OrderStatistics<uint64_t>& orderStatistics() const {
 			return _orderStatistics;
@@ -96,6 +100,8 @@ namespace Werk {
 
 		void reset() {
 			_startTime = 0;
+			_count = 0;
+			//_warmupStatistics.reset();
 			_orderStatistics.reset();
 			_f50Statistics.reset();
 			_f75Statistics.reset();

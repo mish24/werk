@@ -1,0 +1,9 @@
+passing ‘const Werk::ProfileManager’ as ‘this’ argument discards qualifiers [-fpermissive]
+    _profileManager.writeJson(file); ------- add const to right of writeJson(file)
+
+
+expected type-specifier before ‘WriteProfilesAction’
+    _shutdownActions.push_back(new WriteProfilesAction("WriteProfiles", _log, _profileManager, ------------- check class name, forward declaration 
+
+
+ISO C++ forbids converting a string constant to ‘char* ------------ add const to left

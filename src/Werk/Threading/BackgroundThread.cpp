@@ -8,7 +8,15 @@
 
 namespace Werk {
 
+void BackgroundTask::execute() {
+	_profile.start(Werk::epochTime());
+	_action->execute();
+	_profile.stop(Werk::epochTime());
+}
 
+/*
+this method is the actual background thread
+*/
 void BackgroundThread::backgroundThread() {
 
 	while(true) {
