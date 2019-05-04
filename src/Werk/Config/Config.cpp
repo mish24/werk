@@ -45,7 +45,7 @@ void Config::reloadConfigurables() {
 const char *Config::getString(const std::string &key, const char *defaultValue, const char *help) const {
 	const char *stringValue = getStringRaw(key);
 	if (stringValue == nullptr) {
-		_log->log(LogLevel::INFO, "<Config> [%s] = %s [DEFAULT]%s%s",
+		_log->log(LogLevel::CONFIG, "<Config> [%s] = %s [DEFAULT]%s%s",
 			key.c_str(),
 			defaultValue,
 			help == nullptr ? "" : " -- ",
@@ -53,7 +53,7 @@ const char *Config::getString(const std::string &key, const char *defaultValue, 
 		return defaultValue;
 	}
 
-	_log->log(LogLevel::INFO, "<Config> [%s] = %s%s%s",
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
 		key.c_str(),
 		stringValue,
 		help == nullptr ? "" : " -- ",
@@ -64,7 +64,7 @@ const char *Config::getString(const std::string &key, const char *defaultValue, 
 double Config::getDouble(const std::string &key, double defaultValue, const char *help) const {
 	const char *stringValue = getStringRaw(key);
 	if (stringValue == nullptr) {
-		_log->log(LogLevel::INFO, "<Config> [%s] = %f [DEFAULT]%s%s",
+		_log->log(LogLevel::CONFIG, "<Config> [%s] = %f [DEFAULT]%s%s",
 			key.c_str(),
 			defaultValue,
 			help == nullptr ? "" : " -- ",
@@ -72,7 +72,7 @@ double Config::getDouble(const std::string &key, double defaultValue, const char
 		return defaultValue;
 	}
 
-	_log->log(LogLevel::INFO, "<Config> [%s] = %f%s%s",
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
 		key.c_str(),
 		stringValue,
 		help == nullptr ? "" : " -- ",
@@ -83,7 +83,7 @@ double Config::getDouble(const std::string &key, double defaultValue, const char
 int64_t Config::getInt64(const std::string &key, int64_t defaultValue, const char *help) const {
 	const char *stringValue = getStringRaw(key);
 	if (stringValue == nullptr) {
-		_log->log(LogLevel::INFO, "<Config> [%s] = %" PRIi64 " [DEFAULT]%s%s",
+		_log->log(LogLevel::CONFIG, "<Config> [%s] = %" PRIi64 " [DEFAULT]%s%s",
 			key.c_str(),
 			defaultValue,
 			help == nullptr ? "" : " -- ",
@@ -91,7 +91,7 @@ int64_t Config::getInt64(const std::string &key, int64_t defaultValue, const cha
 		return defaultValue;
 	}
 
-	_log->log(LogLevel::INFO, "<Config> [%s] = %" PRIi64 "%s%s",
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %" PRIi64 "%s%s",
 		key.c_str(),
 		stringValue,
 		help == nullptr ? "" : " -- ",
@@ -102,7 +102,7 @@ int64_t Config::getInt64(const std::string &key, int64_t defaultValue, const cha
 uint64_t Config::getUint64(const std::string &key, uint64_t defaultValue, const char *help) const {
 	const char *stringValue = getStringRaw(key);
 	if (stringValue == nullptr) {
-		_log->log(LogLevel::INFO, "<Config> [%s] = %" PRIu64 " [DEFAULT]%s%s",
+		_log->log(LogLevel::CONFIG, "<Config> [%s] = %" PRIu64 " [DEFAULT]%s%s",
 			key.c_str(),
 			defaultValue,
 			help == nullptr ? "" : " -- ",
@@ -110,12 +110,30 @@ uint64_t Config::getUint64(const std::string &key, uint64_t defaultValue, const 
 		return defaultValue;
 	}
 
-	_log->log(LogLevel::INFO, "<Config> [%s] = %" PRIu64 "%s%s",
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %" PRIu64 "%s%s",
 		key.c_str(),
 		stringValue,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
 	return stringValue != nullptr ? std::stoull(stringValue) : defaultValue;
+}
+
+bool Config::getBool(const std::string& key, bool defaultValue, const char* help) const {
+	const ConfigValuesT* const values = _values;
+	auto i = values->find(key);
+	if(i == values->end()) {
+		_log->log(LogLevel::CONFIG, "<Config> [%s] = %s [DEFAULT]%s%s",
+			key.c_str(), defaultValue ? "true" : "false",
+			help == nullptr ? "" : " -- ",
+			help == nullptr ? "" : help);
+		return defaultValue;
+	}
+
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
+		key.c_str(), i->second.c_str(),
+		help == nullptr ? "" : " -- ",
+		help == nullptr ? "" : help);
+	return i->second == "true" || i->second == "True";
 }
 
 }

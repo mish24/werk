@@ -34,15 +34,17 @@ int main()
 	s.sample(1.0);
 	context.stdoutLog()->log(Werk::LogLevel::SUCCESS, "Hello world! count=%" PRIu64 " average=%f stddev=%f", 
 		s.count(), s.average(), s.stddev());
-
-	context.shutdownActions().push_back(new ShutdownAction("Shutdown", context.log()));
-	context.commandManager()->execute("quit");
 	context.commandManager()->execute("help");
 
 	Werk::StringLoggable s1("This is a StringLoggable test...");
 	s1.logTo(context.log());
-	context.log()->logRaw(Werk::LogLevel::INFO, "Going to sleep......");
+	context.log()->logRaw(Werk::LogLevel::ALERT, "Going to sleep......");
 	sleep(5);
-	context.backgroundThread().stop();
+	context.shutdownActions().push_back(new ShutdownAction("Shutdown", context.log()));
+	context.commandManager()->execute("quit");
+	context.log()->logRaw(Werk::LogLevel::INFO, "Done.");
+
+	//This will be called automatically when the context falls out of scope, but is left in as an example
+	context.shutdown();
 	return 0;
 }

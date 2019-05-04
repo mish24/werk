@@ -45,6 +45,10 @@ namespace Werk {
 		_backgroundThread.addTask(_config);
 		_stdoutLog->logRaw(LogLevel::SUCCESS, "<Config> initialized.");
 
+		uint64_t backgroundThreadFrequencyNs = _config->getUint64("Application.BackgroundThreadFrequencyNs",
+			_backgroundThread.frequencyNs());
+		_backgroundThread.setFrequencyNs(backgroundThreadFrequencyNs);
+
 		/*********************** Main log *****************************/
 		const char* logPath = _config->getString("Application.LogPath");
 		FILE* file = nullptr == logPath ? stdout : std::fopen(logPath, "r");
