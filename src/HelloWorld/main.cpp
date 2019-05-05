@@ -47,7 +47,7 @@ int main()
 	Werk::StringLoggable s1("This is a StringLoggable test...");
 	s1.logTo(context.log());
 	context.log()->logRaw(Werk::LogLevel::ALERT, "Going to sleep......");
-	sleep(15);
+	sleep(2);
 	context.shutdownActions().push_back(new ShutdownAction("Shutdown", context.log()));
 	context.commandManager()->execute("quit");
 	context.log()->logRaw(Werk::LogLevel::ALERT, "Staring main loop...");

@@ -9,7 +9,7 @@ namespace Werk {
 		return sysconf(_SC_NPROCESSORS_CONF);
 	}
 
-	BOOL CpuMask::apply() {
+	bool CpuMask::apply() {
 		//TODO
 		return true;
 	}

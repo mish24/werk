@@ -1,13 +1,14 @@
 #pragma once
 
 #include <cstdint>
+#include <cstddef>
 
 namespace Werk {
 
 	/*
 	returns the number of processors in this system
 	*/
-	long getProcessorsCount();
+	long getProcessorCount();
 
 	/*
 	represents a CPU mask to set processor affinity
@@ -25,5 +26,5 @@ namespace Werk {
 
 
 
-	
+
 }

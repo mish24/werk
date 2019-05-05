@@ -10,6 +10,7 @@
 #include "Werk/OS/Signals.hpp"
 #include "Werk/Profiling/WriteProfilesAction.hpp"
 #include "Werk/Threading/Watchdog.hpp"
+#include "Werk/OS/CpuMask.hpp"
 
 namespace Werk
 {
@@ -79,6 +80,10 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	//Background thread
 	uint64_t backgroundThreadFrequencyNs = _config->getUint64("Application.BackgroundFrequencyNs", _backgroundThread.frequencyNs());
 	_backgroundThread.setFrequencyNs(backgroundThreadFrequencyNs);
+
+	/* Add number of CPU cores in AC */
+	_processorCount = getProcessorCount();
+	_log->log(LogLevel::INFO, "Detected %zu number of CPU processor cores", _processorCount);
 
 
 	//Set the instance ID
