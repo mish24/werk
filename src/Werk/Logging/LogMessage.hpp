@@ -25,13 +25,8 @@ namespace Werk {
 		char message[maxLineLength];
 		LogMessage() {}
 
-		LogMessage(const LogMessage& m) {
-			std::memcpy(this, &m, headerSize + m.length);
-		}
+		LogMessage(const LogMessage& m) = default;
 
-		LogMessage& operator=(const LogMessage& m) {
-			std::memcpy(this, &m, headerSize + m.length);
-			return *this; //returned by value
-		}
+		LogMessage& operator=(const LogMessage& m) = default;
 	};
 }

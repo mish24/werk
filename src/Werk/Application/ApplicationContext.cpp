@@ -154,7 +154,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	}
 
 	/********** Scheduler *********************/
-	_scheduler = new Scheduler("Scheduler", &_backgroundThread.backgroundClock());
+	_scheduler = new Scheduler("Scheduler", &_backgroundThread.mainClock());
 	_backgroundThread.addTask(_scheduler);
 	//configure scheduled commands
 	const char* scheduledCommandsStr = _config->getString("Application.ScheduledCommands");
@@ -238,7 +238,7 @@ void ApplicationContext::shutdown()
 	_consoleServer.reset();
 }
 
-void ApplicationContext::run() {
+void ApplicationContext::run(Action* mainAction) {
 	//setup the background watchdog timer
 	uint64_t watchdogInterval = _config->getUint64("Application.watchdogInterval", 0, "Interval of the main thread watchdog (ns)");
 	uint64_t watchdogAllowedMisses = _config->getUint64("Application.WatchdogAllowedMisses", 1, "Number of times the main thread can miss the watchdog");
@@ -255,7 +255,10 @@ void ApplicationContext::run() {
 		while (!_quitting.value()) {
 			//TODO: run a main loop action
 			//run other queued actions
+			_realTimeClock.setEpochTime();
+			mainAction->execute();
 			_foregroundActionQueue.execute();
+			_backgroundThread.setMainClockTime(_clock->time());
 			//Made it through another loop, set the watchdog
 			watchdog->reset();
 		}

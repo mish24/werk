@@ -36,7 +36,7 @@ public:
 	void shutdown();
 
 	//optional main loop
-	void run();
+	void run(Action* mainAction=&NULL_ACTION);
 
 	void logTo(Log* log) const override;
 

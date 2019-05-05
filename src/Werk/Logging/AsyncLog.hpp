@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/lockfree/spsc_queue.hpp>
+#include <boost/lockfree/queue.hpp>
 #include <cstdio>
 #include <cstdint>
 
@@ -16,7 +16,7 @@ namespace Werk {
 		FILE* _file;
 		uint64_t _nextSendSequenceNumber = 0;
 		uint64_t _nextReceiveSequenceNumber = 0;
-		boost::lockfree::spsc_queue<LogMessage, boost::lockfree::capacity<2048> > _messages;
+		boost::lockfree::queue<LogMessage, boost::lockfree::capacity<2048> > _messages;
 
 	public:
 

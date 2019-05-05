@@ -34,6 +34,8 @@ void BackgroundThread::backgroundThread() {
 
 	while(true) {
 		//execute all tasks
+		//update the time
+		_mainClock.setTime(_mainClockTime);
 		_backgroundClock.setEpochTime();
 		for(size_t i=0; i < _tasks.size(); ++i) {
 			_tasks[i]->execute();

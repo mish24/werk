@@ -21,7 +21,6 @@ namespace Werk {
 		bool repeat() const { return _count != 0; }
 
 		void execute() {
-			if(_tasks.size() == 0) return;
 			_action->execute();
 			if(_count > 0) {
 				_count -= 1;
@@ -48,16 +47,14 @@ namespace Werk {
 		}
 
 		void execute() override {
+			if(_tasks.size() == 0) return;
 			uint64_t time = _clock->time();
-			do {
-				//get the next task
-				auto i = _tasks.begin();
+			for(auto i = _tasks.begin(); i != _tasks.end(); i = _tasks.begin()) {
 				uint64_t nextTime = i->first;
 				ScheduledTask* task = i->second;
 				if(nextTime > time) {
 					break;
 				}
-				//run the task and move it forward in time
 				task->execute();
 				_tasks.erase(i);
 				if(task->repeat()) {
@@ -66,7 +63,7 @@ namespace Werk {
 				else {
 					delete task;
 				}
-			} while(true);
+			}
 		}
 
 	protected:

@@ -21,6 +21,8 @@ namespace Werk {
 		void execute() override {}
 	};
 
+	extern NullAction NULL_ACTION;
+
 	template<typename T=uint64_t>
 	class CounterAction : public Action {
 

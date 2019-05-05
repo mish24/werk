@@ -3,6 +3,8 @@
 namespace Werk
 {
 
+const std::string NO_UNIT("");
+
 const UnitsT STORAGE_UNITS = {
 	{ "P", 1024ul * 1024 * 1024 * 1024 * 1024 },
 	{ "T", 1024ul * 1024 * 1024 * 1024 },
@@ -10,6 +12,23 @@ const UnitsT STORAGE_UNITS = {
 	{ "M", 1024ul * 1024 },
 	{ "K", 1024ul },
 };
+
+void formatUnits(uint64_t value, const UnitsT &units, double &scaledValue, const char *&unitStr)
+{
+	//By default, have no units
+	scaledValue = static_cast<double>(value);
+	unitStr = NO_UNIT.c_str();
+
+	//Otherwise, find an appropriate scaling factor
+	for (auto &unit : units) {
+		if (value >= unit.second) {
+			scaledValue /= unit.second;
+			unitStr = unit.first.c_str();
+			break;
+		}
+	}
+}
+
 const UnitsT TIME_UNITS = {
 	{ "d", 24ul * 60 * 60 * 1000 * 1000 * 1000 },
 	{ "h", 60ul * 60 * 1000 * 1000 * 1000 },

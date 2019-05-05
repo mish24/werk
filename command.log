@@ -1,6 +1,6 @@
 {"t": 0, "commandLine": "echo Hi!"}
 {"t": 0, "commandLine": "warning Testing..."}
 {"t": 0, "commandLine": "help"}
-{"t": 586339788061997, "commandLine": "quit"}
-{"t": 586339788061997, "commandLine": "echo Hi!"}
-{"t": 586339788061997, "commandLine": "warning Testing..."}
+{"t": 607370056752710, "commandLine": "quit"}
+{"t": 607370056752710, "commandLine": "echo Hi!"}
+{"t": 607370056752710, "commandLine": "warning Testing..."}

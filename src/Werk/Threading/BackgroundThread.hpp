@@ -60,6 +60,8 @@ public:
 
 	bool stopped() const { return _stopped; }
 
+	void setMainClockTime(uint64_t time) { _mainClockTime = time; }
+
 	uint64_t frequencyNs() const { return _frequencyNs; }
 	void setFrequencyNs(uint64_t frequencyNs) { _frequencyNs = frequencyNs; }
 
@@ -76,6 +78,7 @@ public:
 		_tasks.push_back(task);
 	}
 
+	const Clock& mainClock() const { return _mainClock; }
 	const Clock &backgroundClock() const { return _backgroundClock; }
 
 	void stop() {
@@ -96,10 +99,12 @@ private:
 	bool _stopped = false;
 
 	//Shared state
+	volatile uint64_t _mainClockTime = 0;
 	volatile uint64_t _frequencyNs;
 	volatile bool _running = true;
 
 	//Background thread state & method
+	Clock _mainClock;
 	Clock _backgroundClock;
 	timespec _delay;
 	void backgroundThread();
