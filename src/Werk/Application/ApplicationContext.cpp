@@ -23,6 +23,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	//Setup handlers for certain signals
 	setupSegfaultHandler();
+	_realTimeClock.setEpochTime();
 
 	/********** Stdout Log **********/
 
@@ -149,6 +150,20 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 			//Setup a background task to forward tasks to the command manager
 			ConsoleCommandReceiver *consoleCommandReceiver = new ConsoleCommandReceiver("IpcConsole", *_consoleServer, *_commandManager);
 			_backgroundThread.addTask(consoleCommandReceiver);
+		}
+	}
+
+	/********** Scheduler *********************/
+	_scheduler = new Scheduler("Scheduler", &_backgroundThread.backgroundClock());
+	_backgroundThread.addTask(_scheduler);
+	//configure scheduled commands
+	const char* scheduledCommandsStr = _config->getString("Application.ScheduledCommands");
+	if(nullptr != scheduledCommandsStr) {
+		//split and add each command
+		std::vector<std::string> scheduledCommands;
+		boost::split(scheduledCommands, scheduledCommandsStr, boost::is_any_of(";"));
+		for(auto& command : scheduledCommands) {
+			(void) command;
 		}
 	}
 
