@@ -84,7 +84,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	/* Add number of CPU cores in AC */
 	_processorCount = getProcessorCount();
-	_log->log(LogLevel::INFO, "Detected %zu number of CPU processor cores", _processorCount);
+	_log->log(LogLevel::JSON, "{\"type\": \"startup.hardware\", \"processorCount\":%zu}", _processorCount);
 
 
 	//Set the instance ID
@@ -184,7 +184,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 		}
 	}
 
-	_log->logRaw(LogLevel::SUCCESS, "<ApplicationContext> Initialized.");
+	_log->logRaw(LogLevel::JSON, "{\"type\": \"startup.initialized\"}");
 }
 
 ApplicationContext::~ApplicationContext()
@@ -225,13 +225,13 @@ void ApplicationContext::shutdown()
 	}
 
 	//Run shutdown actions
-	_log->logRaw(LogLevel::INFO, "Running shutdown actions...");
+	_log->logRaw(LogLevel::JSON, "{\"type\": \"shutdown.shutdownActions\"}");
 	for (Action *action : _shutdownActions) {
 		action->execute();
 	}
-	_log->logRaw(LogLevel::SUCCESS, "Shutdown actions complete.");
+	_log->logRaw(LogLevel::JSON, "{\"type\": \"shutdown.shutdownActionsComplete\"}");
 
-	_log->logRaw(LogLevel::INFO, "Shutting down...");
+	_log->logRaw(LogLevel::JSON, "{\"type\": \"shutdown.shuttingDown\"}");
 	_backgroundThread.stop();
 
 	//Cleanup the console
@@ -251,7 +251,7 @@ void ApplicationContext::run(Action* mainAction) {
 		_backgroundThread.addTask(watchdog);
 		}
 
-		_log->logRaw(LogLevel::ALERT, "Entering main loop...");
+		_log->logRaw(LogLevel::JSON, "{\"type\": \"mainLoop.enter\"}");
 		while (!_quitting.value()) {
 			//TODO: run a main loop action
 			//run other queued actions
@@ -262,7 +262,7 @@ void ApplicationContext::run(Action* mainAction) {
 			//Made it through another loop, set the watchdog
 			watchdog->reset();
 		}
-		_log->logRaw(LogLevel::ALERT, "Exiting main loop...");
+		_log->logRaw(LogLevel::JSON, "{\"type\": \"mainLoop.exit\"}");
 
 		shutdown();
 	}
