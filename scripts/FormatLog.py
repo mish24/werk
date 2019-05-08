@@ -32,6 +32,8 @@ jsonMessageTranslations = {
 	'shutdown.shutdownActionsComplete': ('SUCCESS', '<ApplicationContext> Shutdown actions complete'),
 	'shutdown.shuttingDown': ('INFO', '<ApplicationContext> Shutting down...'),
 
+	'startup.software': ('INFO', '<ApplicationContext> Detected... OS: %(os)s | Hostname: %(hostname)s | PID: %(pid)s | PPID: %(ppid)s | CWD: %(cwd)s.'),
+	'startup.hardware': ('INFO', 'ApplicationContext> Detected.. %(processorCount)s CPU cores.'),
 	'startup.hardware': ('INFO', '<ApplicationContext> Detected %(processorCount)s CPU cores.'),
 	'startup.initialized': ('SUCCESS', '<ApplicationContext> initialized.'),
 }

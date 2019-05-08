@@ -3,6 +3,7 @@
 #include <boost/algorithm/string.hpp>
 #include <cstdio>
 #include <signal.h>
+#include <unistd.h>
 
 #include "Werk/Commands/WriteCommandLogAction.hpp"
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
@@ -11,6 +12,7 @@
 #include "Werk/Profiling/WriteProfilesAction.hpp"
 #include "Werk/Threading/Watchdog.hpp"
 #include "Werk/OS/CpuMask.hpp"
+#include "Werk/OS/OS.hpp"
 
 namespace Werk
 {
@@ -75,6 +77,24 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	_backgroundThread.addTask(_log);
 	_config->setLog(_log);
 	_log->logRaw(LogLevel::SUCCESS, "<Log> Initialized.");
+
+	/********** Detect software state **************************/
+	//PIDs
+	pid_t pid = getpid();
+	pid_t ppid = getppid();
+	//current working directory
+	char currentWorkingDir[1024];
+	if(nullptr == getcwd(currentWorkingDir, sizeof(currentWorkingDir))) {
+		strcpy(currentWorkingDir, "Error getting current working directory.");
+	}
+
+	//hostname
+	char hostname[1024];
+	if(0 != gethostname(hostname, sizeof(hostname))) {
+		strcpy(hostname, "Error getting hostname.");
+	}
+
+	_log->log(LogLevel::JSON, "{\"type\":\"startup.software\",\"os\":\"%s\",\"pid\":%ld,\"ppid\":%ld,\"cwd\":\"%s\",\"hostname\":\"%s\"}", getOS(), pid, ppid, currentWorkingDir, hostname);
 
 	/********** Configure Existing Components Now That Log Is Setup **********/
 
