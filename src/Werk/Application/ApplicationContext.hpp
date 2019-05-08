@@ -15,6 +15,7 @@
 #include "Werk/Threading/Scheduler.hpp"
 #include "Werk/Threading/ActionQueue.hpp"
 #include "Werk/Utility/Latch.hpp"
+#include "Werk/OS/DynamicLibraryManager.hpp"
 
 
 namespace Werk
@@ -50,6 +51,8 @@ public:
 	const std::vector<std::string> &startupCommands() const { return _startupCommands; }
 	std::vector<std::string> &shutdownCommands() { return _shutdownCommands; }
 	const std::vector<std::string> &shutdownCommands() const { return _shutdownCommands; }
+	DynamicLibraryManager& dynamicLibraryManager() { return _dynamicLibraryManager; }
+	const DynamicLibraryManager& dynamicLibraryManager() const { return _dynamicLibraryManager; }
 
 	//Main thread
 	const Clock &realTimeClock() const { return _realTimeClock; }
@@ -85,6 +88,7 @@ private:
 	long _processorCount;
 	std::vector<std::string> _startupCommands;
 	std::vector<std::string> _shutdownCommands;
+	DynamicLibraryManager _dynamicLibraryManager;
 
 	Clock _realTimeClock;
 	Clock *_clock;

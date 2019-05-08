@@ -70,7 +70,7 @@ def configure(ctx):
 
 	#Setup libraries
 	ctx.env.LIB = [
-		'pthread', 'rt'
+		'pthread', 'rt', 'dl',
 		]
 
 def build(ctx):
